@@ -16,6 +16,10 @@ namespace DownGrade
     /// </summary>
     public class Game1 : Game
     {
+        private Cloud _cloud;
+        private Cloud_2 _cloud2;
+        private List<Sprite> sprites = new List<Sprite>();
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -35,6 +39,11 @@ namespace DownGrade
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //Set game size
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.ApplyChanges();
+
 
             base.Initialize();
         }
@@ -49,6 +58,12 @@ namespace DownGrade
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Texture2D cloudTexture = Content.Load<Texture2D>("cloud.png");
+            _cloud = new Cloud(cloudTexture, new Vector2(50, 50));
+            _cloud2 = new Cloud_2(cloudTexture, new Vector2(700, 50));
+
+            sprites.Add(_cloud);
+            sprites.Add(_cloud2);
         }
 
         /// <summary>
@@ -71,6 +86,17 @@ namespace DownGrade
                 Exit();
 
             // TODO: Add your update logic here
+            //if (Keyboard.GetState().IsKeyDown(Keys.Left)) dikkiDinosaurPosition.X--;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Right)) dikkiDinosaurPosition.X++;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Up)) dikkiDinosaurPosition.Y--;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Down)) dikkiDinosaurPosition.Y++;
+
+            foreach (Sprite sprite in sprites)
+            {
+                sprite.Update(gameTime);
+            }
+
+            CollisionHandler.Instance.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -84,6 +110,12 @@ namespace DownGrade
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            foreach (Sprite sprite in sprites)
+            {
+                sprite.Draw(gameTime, spriteBatch);
+            }
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
