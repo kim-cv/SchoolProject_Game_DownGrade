@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using DownGrade.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
 {
-    class Cloud_2 : Sprite
+    class Cloud_2 : Sprite, IInputGamePadLeftStick
     {
         public Cloud_2(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -19,7 +20,7 @@ namespace DownGrade
         public override void Update(GameTime gameTime)
         {
             //move slowly be decreasing positionX
-            PositionX--;
+            //PositionX--;
 
             // if sky moves out of the window move it back into position
             //if (PositionX < -200) PositionX = 900;
@@ -29,6 +30,12 @@ namespace DownGrade
         {
             //base.Collide(s);
             Debug.WriteLine("2");
+        }
+
+        public void LeftStickMove(Vector2 moveVector)
+        {
+            //Position += moveVector;
+            Position += new Vector2(moveVector.X, -moveVector.Y);
         }
     }
 }

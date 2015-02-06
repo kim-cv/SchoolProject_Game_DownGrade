@@ -39,6 +39,12 @@
     <Compile Include="Cloud_2.cs" />
     <Compile Include="CollisionHandler.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Interfaces\IInputGamePadButtons.cs" />
+    <Compile Include="Interfaces\IInputGamePadDigitalDpad.cs" />
+    <Compile Include="Interfaces\IInputGamePadDigitalTriggers.cs" />
+    <Compile Include="Interfaces\IInputGamePadLeftStick.cs" />
+    <Compile Include="Interfaces\IInputGamePadRightStick.cs" />
+    <Compile Include="Interfaces\InputController.cs" />
     <Compile Include="Interfaces\IObserver.cs" />
     <Compile Include="Interfaces\ISubject.cs" />
     <Compile Include="Program.cs" />

@@ -19,6 +19,8 @@ namespace DownGrade
         private Cloud _cloud;
         private Cloud_2 _cloud2;
         private List<Sprite> sprites = new List<Sprite>();
+        private InputController inputController1;
+        private InputController inputController2;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -54,6 +56,10 @@ namespace DownGrade
         /// </summary>
         protected override void LoadContent()
         {
+            inputController1 = new InputController(PlayerIndex.One);
+            inputController2 = new InputController(PlayerIndex.Two);
+            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -61,7 +67,8 @@ namespace DownGrade
             Texture2D cloudTexture = Content.Load<Texture2D>("cloud.png");
             _cloud = new Cloud(cloudTexture, new Vector2(50, 50));
             _cloud2 = new Cloud_2(cloudTexture, new Vector2(700, 50));
-
+            inputController1.InputGamePadLeftStickListeners.Add(_cloud);
+            inputController2.InputGamePadLeftStickListeners.Add(_cloud2);
             sprites.Add(_cloud);
             sprites.Add(_cloud2);
         }
@@ -97,7 +104,8 @@ namespace DownGrade
             }
 
             CollisionHandler.Instance.Update(gameTime);
-
+            inputController1.Update(gameTime);
+            inputController2.Update(gameTime);
             base.Update(gameTime);
         }
 
