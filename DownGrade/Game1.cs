@@ -19,6 +19,12 @@ namespace DownGrade
         private Cloud _cloud;
         private Cloud_2 _cloud2;
         private Rocket _rocket;
+        private Asteroid _asteroid;
+        private Bullet _bullet;
+        private Robot _robot;
+        private Ufo _ufo;
+
+
         private List<Sprite> sprites = new List<Sprite>();
         private InputController inputController1;
         private InputController inputController2;
@@ -65,15 +71,35 @@ namespace DownGrade
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            //Load textures
             Texture2D cloudTexture = Content.Load<Texture2D>("cloud.png");
             Texture2D rocketTextre = Content.Load<Texture2D>("rocket.png");
+            Texture2D asteroidTextre = Content.Load<Texture2D>("asteroid.png");
+            Texture2D bulletTextre = Content.Load<Texture2D>("Bullet.png");
+            Texture2D robotTextre = Content.Load<Texture2D>("robot.png");
+            Texture2D UFOTextre = Content.Load<Texture2D>("UFO.png");
+
+            //Make gameobjects
             _cloud = new Cloud(cloudTexture, new Vector2(50, 50));
             _cloud2 = new Cloud_2(cloudTexture, new Vector2(700, 50));
             _rocket = new Rocket(rocketTextre, new Vector2(50, 300));
+            _asteroid = new Asteroid(asteroidTextre, new Vector2(50, 300));
+            _bullet = new Bullet(bulletTextre, new Vector2(50, 300));
+            _robot = new Robot(robotTextre, new Vector2(50, 300));
+            _ufo = new Ufo(UFOTextre, new Vector2(50, 300));
+
+            //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController2.InputGamePadLeftStickListeners.Add(_cloud2);
+
+            //Add sprites
             sprites.Add(_cloud);
             sprites.Add(_cloud2);
+            sprites.Add(_asteroid);
+            sprites.Add(_bullet);
+            sprites.Add(_robot);
+            sprites.Add(_ufo);
             _rocket.Scale = 0.3f;
             sprites.Add(_rocket);
         }
