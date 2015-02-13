@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
 {
-    class Cloud_2 : Sprite, IInputGamePadLeftStick
+    class Rocket : Sprite, IInputGamePadLeftStick
     {
-        public Cloud_2(Texture2D spriteTexture, Vector2 position)
+        public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
             CollisionHandler.Instance.register(this);
@@ -20,7 +20,7 @@ namespace DownGrade
         public override void Update(GameTime gameTime)
         {
             //move slowly be decreasing positionX
-            //PositionX--;
+            //PositionX++;
 
             // if sky moves out of the window move it back into position
             //if (PositionX < -200) PositionX = 900;
@@ -28,17 +28,16 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            //base.Collide(s);
-            this.Scale = 0;
-            Debug.WriteLine("2");
+            //collide
         }
 
         public void LeftStickMove(Vector2 moveVector)
         {
             //Position += moveVector;
-            Vector2 newVec = new Vector2(moveVector.X, -moveVector.Y);
-            newVec = newVec * 20;
-            Position += newVec;
+            Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
+            meh = meh * 20;
+            Position += meh;
+
         }
     }
 }
