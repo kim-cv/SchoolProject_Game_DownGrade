@@ -35,9 +35,9 @@ namespace DownGrade
         public void LeftStickMove(Vector2 moveVector)
         {
             //Position += moveVector;
-            Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
-            meh = meh * 20;
-            Position += meh;
+            Vector2 newVec = new Vector2(moveVector.X, -moveVector.Y);
+            newVec = newVec * 20;
+            Position += newVec;
         }
     }
 }
