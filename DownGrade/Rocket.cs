@@ -34,10 +34,23 @@ namespace DownGrade
         public void LeftStickMove(Vector2 moveVector)
         {
             //Position += moveVector;
-            Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
-            meh = meh * 20;
-            Position += meh;
+            
+            //float newRotation = Math.Sin()
 
+            if (moveVector.X > 0) { 
+                Rotation += 0.05f;
+            }
+            if (moveVector.X < 0)
+            {
+                Rotation -= 0.05f;
+            }
+
+
+            Origin = new Vector2(SpriteTexture.Width / 2f, SpriteTexture.Height / 2f);
+            
+            //Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
+            //meh = meh * 20;
+            //Position += meh;
         }
     }
 }

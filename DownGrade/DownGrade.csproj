@@ -35,6 +35,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Ufo.cs" />
+    <Compile Include="Robot.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="Asteroid.cs" />
     <Compile Include="Cloud.cs" />
     <Compile Include="Cloud_2.cs" />
     <Compile Include="CollisionHandler.cs" />
