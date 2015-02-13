@@ -29,7 +29,7 @@ namespace DownGrade
         public override void Collide(Sprite s)
         {
             //base.Collide(s);
-            this.Scale = 0;
+            //this.Scale = 0;
             //Debug.WriteLine("3");
         }
 

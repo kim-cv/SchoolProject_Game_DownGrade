@@ -19,17 +19,13 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-            //move slowly be decreasing positionX
-            //PositionX++;
-
-            // if sky moves out of the window move it back into position
-            //if (PositionX < -200) PositionX = 900;
+            
         }
 
         public override void Collide(Sprite s)
         {
             //base.Collide(s);
-            this.Scale = 0;
+            //this.Scale = 0;
             //Debug.WriteLine("3");
         }
 

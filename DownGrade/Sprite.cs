@@ -40,6 +40,7 @@ namespace DownGrade
 
         public virtual SpriteEffects SpriteEffect { get; set; }
 
+
         public virtual Rectangle BoundingBox
         {
             get

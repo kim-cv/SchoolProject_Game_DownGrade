@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
 {
-    class Asteroid : Sprite, IInputGamePadLeftStick
+    class Asteroid : Sprite
     {
         public Asteroid(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -19,11 +19,7 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-            //move slowly be decreasing positionX
-            //PositionX++;
-
-            // if sky moves out of the window move it back into position
-            //if (PositionX < -200) PositionX = 900;
+            PositionY++;
         }
 
         public override void Collide(Sprite s)
@@ -31,14 +27,6 @@ namespace DownGrade
             //base.Collide(s);
             this.Scale = 0;
             //Debug.WriteLine("3");
-        }
-
-        public void LeftStickMove(Vector2 moveVector)
-        {
-            //Position += moveVector;
-            Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
-            meh = meh*20;
-            Position += meh;
         }
     }
 }

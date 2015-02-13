@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DownGrade
 {
-    class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
+    class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers, IInputGamePadButtons
     {
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -43,11 +43,7 @@ namespace DownGrade
 
         public void LeftTriggerPressed(float pressure)
         {
-            var deltaX = Math.Sin(Rotation);
-            var deltaY = -Math.Cos(Rotation);
-            Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
-            meh = meh * pressure;
-            Position += meh;
+            
         }
 
         public void RightTriggerPressed(float pressure)
@@ -55,8 +51,63 @@ namespace DownGrade
             var deltaX = Math.Sin(Rotation);
             var deltaY = -Math.Cos(Rotation);
             Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
-            meh = meh * 1f;
+            meh = meh * pressure;
             Position += meh;
+        }
+
+        void Shoot()
+        {
+            
+        }
+
+        public void ButtonXDown(InputController.ButtonStates buttonStates)
+        {
+            Shoot();
+        }
+
+        public void ButtonADown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonBDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonYDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonLeftShoulderDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonRightShoulderDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonStartDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonBackDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonLeftStickDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ButtonRightStickDown(InputController.ButtonStates buttonStates)
+        {
+            throw new NotImplementedException();
         }
     }
 }
