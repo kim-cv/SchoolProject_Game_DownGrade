@@ -30,7 +30,7 @@ namespace DownGrade
         {
             //base.Collide(s);
             this.Scale = 0;
-            Debug.WriteLine("2");
+            //Debug.WriteLine("2");
         }
 
         public void LeftStickMove(Vector2 moveVector)
