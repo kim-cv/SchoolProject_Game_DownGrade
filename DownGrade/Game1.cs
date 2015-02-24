@@ -16,7 +16,8 @@ namespace DownGrade
     /// </summary>
     public class Game1 : Game
     {
-        private Rocket _rocket;
+        //private Rocket _rocket;
+        private AnimatedRocket _rocket;
         private Asteroid _asteroid;
         private Bullet _bullet;
         private Robot _robot;
@@ -75,6 +76,7 @@ namespace DownGrade
             //Load textures
             Texture2D asteroidTexture = Content.Load<Texture2D>("asteroid.png");
             Texture2D rocketTexture = Content.Load<Texture2D>("rocket.png");
+            Texture2D animatedRocketTexture = Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
             Texture2D bulletTexture = Content.Load<Texture2D>("Bullet.png");
             Texture2D robotTexture = Content.Load<Texture2D>("robot.png");
             Texture2D UFOTexture = Content.Load<Texture2D>("UFO.png");
@@ -82,7 +84,8 @@ namespace DownGrade
             //Make gameobjects
             _asteroid = new Asteroid(asteroidTexture, new Vector2(0, 0));
             _asteroid.Scale = 0.3f;
-            _rocket = new Rocket(rocketTexture, new Vector2(100, 300));
+            //_rocket = new Rocket(rocketTexture, new Vector2(100, 300));
+            _rocket = new AnimatedRocket(animatedRocketTexture, new Vector2(100, 300));
             _bullet = new Bullet(bulletTexture, new Vector2(50, 300));
             _robot = new Robot(robotTexture, new Vector2(50, 300));
             _ufo = new Ufo(UFOTexture, new Vector2(50, 300));
@@ -100,6 +103,7 @@ namespace DownGrade
             //sprites.Add(_robot);
             //sprites.Add(_ufo);
             _rocket.Scale = 0.2f;
+            //sprites.Add(_rocket);
             sprites.Add(_rocket);
         }
 
@@ -123,20 +127,6 @@ namespace DownGrade
                 Exit();
 
             // TODO: Add your update logic here
-            if (Keyboard.GetState().IsKeyDown(Keys.A)) _rocket.Rotation -= 0.05f;
-            if (Keyboard.GetState().IsKeyDown(Keys.D)) _rocket.Rotation += 0.05f;
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                var deltaX = Math.Sin(_rocket.Rotation);
-                var deltaY = -Math.Cos(_rocket.Rotation);
-                Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
-                meh = meh * 2f;
-                _rocket.Position += meh;
-            }
-
-            //if (Keyboard.GetState().IsKeyDown(Keys.Right)) dikkiDinosaurPosition.X++;
-            //if (Keyboard.GetState().IsKeyDown(Keys.Up)) dikkiDinosaurPosition.Y--;
-            //if (Keyboard.GetState().IsKeyDown(Keys.Down)) dikkiDinosaurPosition.Y++;
 
             foreach (Sprite sprite in sprites)
             {
