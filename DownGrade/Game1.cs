@@ -77,7 +77,6 @@ namespace DownGrade
             Texture2D animatedRocketTexture = Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
 
             //Make gameobjects
-            _rocket = new AnimatedRocket(animatedRocketTexture, new Vector2(100, 300));
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
@@ -86,15 +85,9 @@ namespace DownGrade
             Asteroid asteroid = (Asteroid) Spawner.Instance.Spawn("Asteroid");
             asteroid.Scale = 0.3f;
 
-            //Add sprites
-            //_asteroid.Scale = 0.3f;
-            //sprites.Add(_asteroid);
-            //sprites.Add(_bullet);
-            //sprites.Add(_robot);
-            //sprites.Add(_ufo);
-            _rocket.Scale = 0.2f;
-            //sprites.Add(_rocket);
-            sprites.Add(_rocket);
+            AnimatedRocket rocket = (AnimatedRocket)Spawner.Instance.Spawn("AnimatedRocket");
+            rocket.Scale = 0.2f;
+            rocket.Position = new Vector2(100, 250);
         }
 
         /// <summary>
