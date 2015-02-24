@@ -128,7 +128,13 @@ namespace DownGrade
 
             // TODO: Add your update logic here
 
+            List<Sprite> tempSprites = new List<Sprite>();
             foreach (Sprite sprite in sprites)
+            {
+                tempSprites.Add(sprite);
+            }
+
+            foreach (Sprite sprite in tempSprites)
             {
                 sprite.Update(gameTime);
             }

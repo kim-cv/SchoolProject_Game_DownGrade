@@ -13,6 +13,8 @@ namespace DownGrade
     {
         Animation animation;
 
+        private KeyboardState _keyState;
+
         private State _lastState;
         private State _state;
         public enum State
@@ -37,6 +39,10 @@ namespace DownGrade
             {
                 animation.Update(gameTime);
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
+
+            _keyState = Keyboard.GetState();
 
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
@@ -139,7 +145,11 @@ namespace DownGrade
 
         void Shoot()
         {
-
+            Bullet bullet = (Bullet) Spawner.Instance.Spawn("Bullet");
+            bullet.Scale = 0.02f;
+            bullet.speed = 5f;
+            bullet.Position = Position;
+            bullet.Rotation = Rotation;
         }
 
         public void ButtonXDown(InputController.ButtonStates buttonStates)

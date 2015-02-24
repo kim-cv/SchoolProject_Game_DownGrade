@@ -11,6 +11,8 @@ namespace DownGrade
 {
     class Bullet : Sprite
     {
+        public float speed;
+
         public Bullet(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
@@ -19,7 +21,11 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-            
+            var deltaX = Math.Sin(Rotation);
+            var deltaY = -Math.Cos(Rotation);
+            Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
+            meh = meh * speed;
+            Position += meh;
         }
 
         public override void Collide(Sprite s)
