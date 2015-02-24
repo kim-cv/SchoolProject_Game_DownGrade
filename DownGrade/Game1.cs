@@ -74,27 +74,17 @@ namespace DownGrade
             // TODO: use this.Content to load your game content here
 
             //Load textures
-            Texture2D asteroidTexture = Content.Load<Texture2D>("asteroid.png");
-            Texture2D rocketTexture = Content.Load<Texture2D>("rocket.png");
             Texture2D animatedRocketTexture = Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
-            Texture2D bulletTexture = Content.Load<Texture2D>("Bullet.png");
-            Texture2D robotTexture = Content.Load<Texture2D>("robot.png");
-            Texture2D UFOTexture = Content.Load<Texture2D>("UFO.png");
 
             //Make gameobjects
-            _asteroid = new Asteroid(asteroidTexture, new Vector2(0, 0));
-            _asteroid.Scale = 0.3f;
-            //_rocket = new Rocket(rocketTexture, new Vector2(100, 300));
             _rocket = new AnimatedRocket(animatedRocketTexture, new Vector2(100, 300));
-            _bullet = new Bullet(bulletTexture, new Vector2(50, 300));
-            _robot = new Robot(robotTexture, new Vector2(50, 300));
-            _ufo = new Ufo(UFOTexture, new Vector2(50, 300));
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
 
-            Spawner.Instance.Spawn("Asteroid");
+            Asteroid asteroid = (Asteroid) Spawner.Instance.Spawn("Asteroid");
+            asteroid.Scale = 0.3f;
 
             //Add sprites
             //_asteroid.Scale = 0.3f;
