@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
 {
-    class Bullet : Sprite, IInputGamePadLeftStick
+    class Bullet : Sprite
     {
         public Bullet(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -27,14 +27,6 @@ namespace DownGrade
             //base.Collide(s);
             //this.Scale = 0;
             //Debug.WriteLine("3");
-        }
-
-        public void LeftStickMove(Vector2 moveVector)
-        {
-            //Position += moveVector;
-            Vector2 meh = new Vector2(moveVector.X, -moveVector.Y);
-            meh = meh*20;
-            Position += meh;
         }
     }
 }
