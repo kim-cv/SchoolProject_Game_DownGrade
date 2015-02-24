@@ -54,7 +54,6 @@ namespace DownGrade
             graphics.PreferredBackBufferHeight = 600;
             graphics.ApplyChanges();
 
-
             base.Initialize();
         }
 
@@ -66,7 +65,8 @@ namespace DownGrade
         {
             inputController1 = new InputController(PlayerIndex.One);
             inputController2 = new InputController(PlayerIndex.Two);
-            
+
+            Spawner.Instance.SetGameReference(this, sprites);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -94,7 +94,7 @@ namespace DownGrade
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
 
-            Spawner._Instance.Spawn("Asteroid", asteroidTexture, sprites);
+            Spawner.Instance.Spawn("Asteroid");
 
             //Add sprites
             //_asteroid.Scale = 0.3f;
