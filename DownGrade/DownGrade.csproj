@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedRocket.cs" />
     <Compile Include="Spawner.cs" />
     <Compile Include="Ufo.cs" />
     <Compile Include="Robot.cs" />
@@ -73,6 +74,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\rocket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SpaceShip_SpriteSheet_standIn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\UFO.png">

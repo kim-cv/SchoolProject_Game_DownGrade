@@ -5,28 +5,30 @@ using System.Text;
 using DownGrade.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace DownGrade
 {
     class AnimatedRocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers, IInputGamePadButtons
     {
         Animation animation;
+
+        private State _lastState;
         private State _state;
         public enum State
         {
-            Waiting,
-            walking,
-            Jumping
+            Flying,
+            Idle
         }
 
         public AnimatedRocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
             // set sourcerectangle
-            SourceRectangle = new Rectangle(0, 114, 72, 78);
+            SourceRectangle = new Rectangle(0, 0, 455, 795);
 
             CollisionHandler.Instance.register(this);
-            Origin = new Vector2(SpriteTexture.Width / 2f, SpriteTexture.Height / 2f);
+            Origin = new Vector2(SourceRectangle.Width / 2f, SourceRectangle.Height / 2f);
         }
 
         public override void Update(GameTime gameTime)
@@ -34,6 +36,50 @@ namespace DownGrade
             if (animation != null)
             {
                 animation.Update(gameTime);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                var deltaX = Math.Sin(Rotation);
+                var deltaY = -Math.Cos(Rotation);
+                Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
+                moveVector = moveVector * 2f;
+                Position += moveVector;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D) ||
+                Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                _state = State.Flying;
+            }
+            else
+            {
+                _state = State.Idle;
+            }
+
+
+            if (_lastState != _state)
+            {
+                switch (_state)
+                {
+                    case State.Idle:
+                        {
+                            animation = null;
+                            break;
+                        }
+                    case State.Flying:
+                        {
+                            animation = new Animation(this);
+                            animation.Frames.Add(new Rectangle(0, 0, 455, 795));
+                            animation.Frames.Add(new Rectangle(455, 0, 455, 795));
+                            break;
+                        }
+                }
+
+                _lastState = _state;
             }
         }
 
@@ -67,20 +113,12 @@ namespace DownGrade
             if (moveVector.X > 0)
             {
                 Rotation += 0.05f;
+                _state = State.Flying;
             }
-            if (moveVector.X < 0)
+            else if (moveVector.X < 0)
             {
                 Rotation -= 0.05f;
-            }
-
-            if (_state != State.walking)
-            {
-                //instansiate animation and set frames
-                animation = new Animation(this);
-                animation.Frames.Add(new Rectangle(0, 96, 72, 96));
-                animation.Frames.Add(new Rectangle(72, 96, 72, 96));
-                animation.Frames.Add(new Rectangle(144, 96, 72, 96));
-                _state = State.walking;
+                _state = State.Flying;
             }
         }
 
