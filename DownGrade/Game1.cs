@@ -123,7 +123,17 @@ namespace DownGrade
                 Exit();
 
             // TODO: Add your update logic here
-            //if (Keyboard.GetState().IsKeyDown(Keys.Left)) dikkiDinosaurPosition.X--;
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) _rocket.Rotation -= 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.D)) _rocket.Rotation += 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                var deltaX = Math.Sin(_rocket.Rotation);
+                var deltaY = -Math.Cos(_rocket.Rotation);
+                Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
+                meh = meh * 2f;
+                _rocket.Position += meh;
+            }
+
             //if (Keyboard.GetState().IsKeyDown(Keys.Right)) dikkiDinosaurPosition.X++;
             //if (Keyboard.GetState().IsKeyDown(Keys.Up)) dikkiDinosaurPosition.Y--;
             //if (Keyboard.GetState().IsKeyDown(Keys.Down)) dikkiDinosaurPosition.Y++;
