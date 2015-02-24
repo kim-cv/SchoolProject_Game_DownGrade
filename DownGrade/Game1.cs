@@ -94,7 +94,7 @@ namespace DownGrade
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
 
-            _spawner.Spawn(_asteroid, sprites);
+            Spawner._Instance.Spawn("Asteroid", asteroidTexture, sprites);
 
             //Add sprites
             //_asteroid.Scale = 0.3f;
