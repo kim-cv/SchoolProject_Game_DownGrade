@@ -13,7 +13,10 @@ namespace DownGrade
     class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers, IInputGamePadButtons
     {
         private KeyboardState _keyState;
-        private float maxSpeed = 10f;
+        private float acceleration = 5f;
+        private float de_acceleration = 10f;
+        private float velocity = 0f;
+        private float maxSpeed = 5f;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -23,24 +26,38 @@ namespace DownGrade
         }
 
         public override void Update(GameTime gameTime)
-        {   
+        {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
 
             _keyState = Keyboard.GetState();
+
+            var deltaX = Math.Sin(Rotation);
+            var deltaY = -Math.Cos(Rotation);
+            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
 
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                float deltaX = (float)Math.Sin(Rotation);
-                var deltaY = -Math.Cos(Rotation);
-                //Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
-                //moveVector = moveVector * 2f;
-                //Position += moveVector;
-
-                PositionX += deltaX * (int)gameTime;
-                PositionX += player.velocity.y * dt;
+                if (velocity < maxSpeed)
+                {
+                    velocity += acceleration * delta;
+                }
             }
+            else
+            {
+                if (velocity > 0)
+                {
+                    velocity -= de_acceleration * delta;
+                }
+                else if (velocity < 0)
+                {
+                    velocity = 0;
+                }
+            }
+            Position += moveVector * velocity;
         }
 
         public override void Collide(Sprite s)
@@ -50,7 +67,8 @@ namespace DownGrade
 
         public void LeftStickMove(Vector2 moveVector)
         {
-            if (moveVector.X > 0) { 
+            if (moveVector.X > 0)
+            {
                 Rotation += 0.05f;
             }
             if (moveVector.X < 0)
@@ -62,7 +80,7 @@ namespace DownGrade
 
         public void LeftTriggerPressed(float pressure)
         {
-            
+
         }
 
         public void RightTriggerPressed(float pressure)
