@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using DownGrade.Framework;
@@ -16,7 +17,7 @@ namespace DownGrade
         private KeyboardState _keyState;
 
         private State _lastState;
-        private State _state;
+        private State _state = State.Idle;
         public enum State
         {
             Flying,
@@ -56,19 +57,19 @@ namespace DownGrade
             }
 
 
-            if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D) ||
-                Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                _state = State.Flying;
-            }
-            else
-            {
-                _state = State.Idle;
-            }
+            //if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D) ||
+            //    Keyboard.GetState().IsKeyDown(Keys.W))
+            //{
+            //    _state = State.Flying;
+            //}
+            //else
+            //{
+            //    _state = State.Idle;
+            //}
 
-
+            Debug.WriteLine(_lastState + " - " + _state);
             if (_lastState != _state)
-            {
+            { 
                 switch (_state)
                 {
                     case State.Idle:
@@ -119,12 +120,10 @@ namespace DownGrade
             if (moveVector.X > 0)
             {
                 Rotation += 0.05f;
-                _state = State.Flying;
             }
             else if (moveVector.X < 0)
             {
                 Rotation -= 0.05f;
-                _state = State.Flying;
             }
         }
 
@@ -136,11 +135,20 @@ namespace DownGrade
 
         public void RightTriggerPressed(float pressure)
         {
-            var deltaX = Math.Sin(Rotation);
-            var deltaY = -Math.Cos(Rotation);
-            Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
-            meh = meh * pressure;
-            Position += meh;
+            if (pressure > 0.1f)
+            {
+                var deltaX = Math.Sin(Rotation);
+                var deltaY = -Math.Cos(Rotation);
+                Vector2 newVector = new Vector2((float)deltaX, (float)deltaY);
+                newVector = newVector * pressure;
+                Position += newVector;
+
+                _state = State.Flying;
+            }
+            else
+            {
+                _state = State.Idle;
+            }
         }
 
         void Shoot()

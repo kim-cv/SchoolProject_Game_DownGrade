@@ -16,12 +16,6 @@ namespace DownGrade
     /// </summary>
     public class Game1 : Game
     {
-        //private Rocket _rocket;
-        private AnimatedRocket _rocket;
-        private Asteroid _asteroid;
-        private Bullet _bullet;
-        private Robot _robot;
-        private Ufo _ufo;
 
         private Spawner _spawner = new Spawner();
 
@@ -64,7 +58,7 @@ namespace DownGrade
         protected override void LoadContent()
         {
             inputController1 = new InputController(PlayerIndex.One);
-            inputController2 = new InputController(PlayerIndex.Two);
+            //inputController2 = new InputController(PlayerIndex.Two);
 
             Spawner.Instance.SetGameReference(this, sprites);
 
@@ -77,17 +71,17 @@ namespace DownGrade
             Texture2D animatedRocketTexture = Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
 
             //Make gameobjects
+            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn("Asteroid");
+            _asteroid.Scale = 0.3f;
 
+            AnimatedRocket _rocket = (AnimatedRocket)Spawner.Instance.Spawn("AnimatedRocket");
+            _rocket.Scale = 0.2f;
+            _rocket.Position = new Vector2(100, 250);
+            
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
-
-            Asteroid asteroid = (Asteroid) Spawner.Instance.Spawn("Asteroid");
-            asteroid.Scale = 0.3f;
-
-            AnimatedRocket rocket = (AnimatedRocket)Spawner.Instance.Spawn("AnimatedRocket");
-            rocket.Scale = 0.2f;
-            rocket.Position = new Vector2(100, 250);
+            inputController1.InputGamePadButtonListeners.Add(_rocket);
         }
 
         /// <summary>
@@ -124,7 +118,7 @@ namespace DownGrade
 
             CollisionHandler.Instance.Update(gameTime);
             inputController1.Update(gameTime);
-            inputController2.Update(gameTime);
+            //inputController2.Update(gameTime);
             base.Update(gameTime);
         }
 
