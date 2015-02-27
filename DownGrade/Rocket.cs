@@ -15,15 +15,13 @@ namespace DownGrade
     class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
     {
         private KeyboardState _keyState;
-<<<<<<< HEAD
         private GamePadState _padState;
-=======
+
         private float acceleration = 5f;
         private float de_acceleration = 10f;
         private float velocity = 0f;
         private float maxSpeed = 5f;
         private float delta;
->>>>>>> 59c6b3d78965d9b5bf04e015bb2086b34f029838
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -34,17 +32,15 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-<<<<<<< HEAD
             if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed && _padState.Buttons.X == ButtonState.Released)
                 Shoot();
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
                 Shoot();
-=======
+
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
->>>>>>> 59c6b3d78965d9b5bf04e015bb2086b34f029838
 
             _keyState = Keyboard.GetState();
             _padState = GamePad.GetState(PlayerIndex.One);
