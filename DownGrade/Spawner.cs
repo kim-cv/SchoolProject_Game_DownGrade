@@ -54,12 +54,12 @@ namespace DownGrade
             {
                 case "Asteroid":
                     {
-                        texture = GameReference.Content.Load<Texture2D>("asteroid.png");
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_big2.png");
                         return new Asteroid(texture, new Vector2());
                     }
                 case "Bullet":
                     {
-                        texture = GameReference.Content.Load<Texture2D>("Bullet.png");
+                        texture = GameReference.Content.Load<Texture2D>("laserGreen10.png");
                         return new Bullet(texture, new Vector2());
                     }
                 case "Robot":
@@ -69,7 +69,7 @@ namespace DownGrade
                     }
                 case "Rocket":
                     {
-                        texture = GameReference.Content.Load<Texture2D>("rocket.png");
+                        texture = GameReference.Content.Load<Texture2D>("playerShip1_red.png");
                         return new Rocket(texture, new Vector2());
                     }
                 case "AnimatedRocket":

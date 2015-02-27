@@ -68,14 +68,13 @@ namespace DownGrade
             // TODO: use this.Content to load your game content here
 
             //Load textures
-            Texture2D animatedRocketTexture = Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
 
             //Make gameobjects
             Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn("Asteroid");
-            _asteroid.Scale = 0.3f;
+            _asteroid.Scale = 0.7f;
 
-            AnimatedRocket _rocket = (AnimatedRocket)Spawner.Instance.Spawn("AnimatedRocket");
-            _rocket.Scale = 0.2f;
+            Rocket _rocket = (Rocket)Spawner.Instance.Spawn("Rocket");
+            _rocket.Scale = 0.7f;
             _rocket.Position = new Vector2(100, 250);
             
             //Controllers
