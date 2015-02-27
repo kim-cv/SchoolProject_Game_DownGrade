@@ -17,6 +17,7 @@ namespace DownGrade
         private float de_acceleration = 10f;
         private float velocity = 0f;
         private float maxSpeed = 5f;
+        private float delta;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -27,7 +28,7 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
 
@@ -39,7 +40,7 @@ namespace DownGrade
 
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.1f)
             {
                 if (velocity < maxSpeed)
                 {
@@ -85,11 +86,6 @@ namespace DownGrade
 
         public void RightTriggerPressed(float pressure)
         {
-            var deltaX = Math.Sin(Rotation);
-            var deltaY = -Math.Cos(Rotation);
-            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
-            moveVector = moveVector * pressure;
-            Position += moveVector;
         }
 
         void Shoot()
