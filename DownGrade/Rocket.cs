@@ -13,6 +13,7 @@ namespace DownGrade
     class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers, IInputGamePadButtons
     {
         private KeyboardState _keyState;
+        private float maxSpeed = 10f;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
@@ -22,7 +23,7 @@ namespace DownGrade
         }
 
         public override void Update(GameTime gameTime)
-        {
+        {   
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
 
             _keyState = Keyboard.GetState();
@@ -31,11 +32,14 @@ namespace DownGrade
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                var deltaX = Math.Sin(Rotation);
+                float deltaX = (float)Math.Sin(Rotation);
                 var deltaY = -Math.Cos(Rotation);
-                Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
-                moveVector = moveVector * 2f;
-                Position += moveVector;
+                //Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
+                //moveVector = moveVector * 2f;
+                //Position += moveVector;
+
+                PositionX += deltaX * (int)gameTime;
+                PositionX += player.velocity.y * dt;
             }
         }
 
