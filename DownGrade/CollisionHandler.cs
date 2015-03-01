@@ -53,7 +53,10 @@ namespace DownGrade
         public void unregister(Sprite o)
         {
             int i = observers.IndexOf(o);
-            observers.RemoveAt(i);
+            if (i >= 0)
+            {
+                observers.RemoveAt(i);
+            }
         }
 
         public void notify(Sprite sp1, Sprite sp2)
