@@ -9,8 +9,21 @@ namespace DownGrade
 {
     public class Spawner
     {
+        public enum TypeOfGameObject
+        {
+            AsteroidBig1,
+            AsteroidBig2,
+            AsteroidMedium1,
+            AsteroidMedium2,
+            AsteroidSmall1,
+            AsteroidSmall2,
+            Bullet,
+            Robot,
+            Rocket,
+            Ufo
+        }
+
         private Game GameReference = null;
-        List<Sprite> listOfObjects = null;
         private Random rnd = new Random();
 
         private static readonly Spawner _instance = new Spawner();
@@ -23,11 +36,15 @@ namespace DownGrade
         public void SetGameReference(Game reference, List<Sprite> listOfSprites)
         {
             GameReference = reference;
-            listOfObjects = listOfSprites;
+        }
+
+        public void SetGameReference(Game reference)
+        {
+            GameReference = reference;
         }
 
 
-        public Sprite Spawn(String typeOfObject)
+        public Sprite Spawn(TypeOfGameObject typeOfObject)
         {
             float xPosition = rnd.Next(100, 500);
             float yPosition = 0;
@@ -37,7 +54,7 @@ namespace DownGrade
             if (gameObject != null)
             {
                 gameObject.Position = new Vector2(xPosition, yPosition);
-                listOfObjects.Add(gameObject);
+                GameObjectHandler.Instance.AddGameObject(gameObject);
             }
             else
             {
@@ -47,37 +64,58 @@ namespace DownGrade
             return gameObject;
         }
 
-        private Sprite InstanciateGameObject(string typeOfObject)
+
+        private Sprite InstanciateGameObject(TypeOfGameObject typeOfObject)
         {
             Texture2D texture;
             switch (typeOfObject)
             {
-                case "Asteroid":
+                case TypeOfGameObject.AsteroidBig1:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_big1.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.AsteroidBig2:
                     {
                         texture = GameReference.Content.Load<Texture2D>("meteorGrey_big2.png");
                         return new Asteroid(texture, new Vector2());
                     }
-                case "Bullet":
+                case TypeOfGameObject.AsteroidMedium1:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_med1.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.AsteroidMedium2:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_med2.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.AsteroidSmall1:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_small1.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.AsteroidSmall2:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("meteorGrey_small2.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.Bullet:
                     {
                         texture = GameReference.Content.Load<Texture2D>("laserGreen10.png");
                         return new Bullet(texture, new Vector2());
                     }
-                case "Robot":
+                case TypeOfGameObject.Robot:
                     {
                         texture = GameReference.Content.Load<Texture2D>("robot.png");
                         return new Robot(texture, new Vector2());
                     }
-                case "Rocket":
+                case TypeOfGameObject.Rocket:
                     {
                         texture = GameReference.Content.Load<Texture2D>("playerShip1_red.png");
                         return new Rocket(texture, new Vector2());
                     }
-                case "AnimatedRocket":
-                    {
-                        texture = GameReference.Content.Load<Texture2D>("SpaceShip_SpriteSheet_standIn.png");
-                        return new AnimatedRocket(texture, new Vector2());
-                    }
-                case "Ufo":
+                case TypeOfGameObject.Ufo:
                     {
                         texture = GameReference.Content.Load<Texture2D>("UFO.png");
                         return new Ufo(texture, new Vector2());

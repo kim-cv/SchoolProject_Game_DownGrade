@@ -16,11 +16,6 @@ namespace DownGrade
     /// </summary>
     public class Game1 : Game
     {
-
-        private Spawner _spawner = new Spawner();
-
-
-        private List<Sprite> sprites = new List<Sprite>();
         private InputController inputController1;
         private InputController inputController2;
 
@@ -60,7 +55,7 @@ namespace DownGrade
             inputController1 = new InputController(PlayerIndex.One);
             //inputController2 = new InputController(PlayerIndex.Two);
 
-            Spawner.Instance.SetGameReference(this, sprites);
+            Spawner.Instance.SetGameReference(this);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -70,10 +65,10 @@ namespace DownGrade
             //Load textures
 
             //Make gameobjects
-            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn("Asteroid");
+            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig1);
             _asteroid.Scale = 0.7f;
 
-            Rocket _rocket = (Rocket)Spawner.Instance.Spawn("Rocket");
+            Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
             _rocket.Scale = 0.7f;
             _rocket.Position = new Vector2(100, 250);
             
@@ -104,7 +99,8 @@ namespace DownGrade
             // TODO: Add your update logic here
 
             List<Sprite> tempSprites = new List<Sprite>();
-            foreach (Sprite sprite in sprites)
+
+            foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
             {
                 tempSprites.Add(sprite);
             }
@@ -130,7 +126,7 @@ namespace DownGrade
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            foreach (Sprite sprite in sprites)
+            foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
             {
                 sprite.Draw(gameTime, spriteBatch);
             }

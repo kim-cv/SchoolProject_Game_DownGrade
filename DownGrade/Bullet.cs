@@ -30,9 +30,11 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            //base.Collide(s);
-            //this.Scale = 0;
-            //Debug.WriteLine("3");
+            if (s.GetType() != typeof (Rocket) && s.GetType() != typeof (Bullet))
+            {
+                CollisionHandler.Instance.unregister(this);
+                GameObjectHandler.Instance.RemoveGameObject(this);
+            }
         }
     }
 }

@@ -74,7 +74,7 @@ namespace DownGrade
 
         void Shoot()
         {
-            Bullet bullet = (Bullet)Spawner.Instance.Spawn("Bullet");
+            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet);
             bullet.Scale = 0.5f;
             bullet.speed = 5f;
             bullet.Position = Position;

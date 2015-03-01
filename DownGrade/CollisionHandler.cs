@@ -23,15 +23,17 @@ namespace DownGrade
         List<Sprite> observers = new List<Sprite>();
 
 
-       public CollisionHandler()
+        public CollisionHandler()
         {
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (Sprite sprite in observers)
+            List<Sprite> tempList = observers.ToList();
+
+            foreach (Sprite sprite in tempList)
             {
-                foreach (Sprite sprite1 in observers)
+                foreach (Sprite sprite1 in tempList)
                 {
                     if (!sprite.Equals(sprite1) && sprite.BoundingBox.Intersects(sprite1.BoundingBox))
                     {

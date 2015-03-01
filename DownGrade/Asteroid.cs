@@ -11,6 +11,10 @@ namespace DownGrade
 {
     class Asteroid : Sprite
     {
+
+        public int brokenState = 1;
+        private int maxBrokenState = 3;
+
         public Asteroid(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position)
         {
@@ -25,8 +29,18 @@ namespace DownGrade
         public override void Collide(Sprite s)
         {
             //base.Collide(s);
-            this.Scale = 0;
-            //Debug.WriteLine("3");
+            if (s.GetType() != typeof(Asteroid))
+            {
+                CollisionHandler.Instance.unregister(this);
+                GameObjectHandler.Instance.RemoveGameObject(this);
+
+                if (brokenState < maxBrokenState)
+                {
+                    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig1);
+                    a.brokenState = (brokenState+1);
+                    a.Scale = 0.2f;
+                }
+            }
         }
     }
 }
