@@ -22,32 +22,43 @@ namespace DownGrade
         private float velocity = 0f;
         private float maxSpeed = 5f;
         private float delta;
+        private float fireOffset = 11f;
+
+        private Healthbar health;
+        public int maxHealth;
+        public int currentHealth = -1;
+
+        private Shieldbar shield;
+        public int maxShield;
+        public int currentShield = -1;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position)
+            : base(spriteTexture, position, 0)
         {
             CollisionHandler.Instance.register(this);
             Origin = new Vector2(SpriteTexture.Width / 2f, SpriteTexture.Height / 2f);
+            drawResources();
         }
 
         public override void Update(GameTime gameTime)
         {
+            var deltaX = Math.Sin(Rotation);
+            var deltaY = -Math.Cos(Rotation);
+            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed && _padState.Buttons.X == ButtonState.Released)
-                Shoot();
+                Shoot(moveVector);
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
-                Shoot();
+                Shoot(moveVector);
 
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot();
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot(moveVector);
 
             _keyState = Keyboard.GetState();
             _padState = GamePad.GetState(PlayerIndex.One);
 
-            var deltaX = Math.Sin(Rotation);
-            var deltaY = -Math.Cos(Rotation);
-            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
 
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
@@ -72,18 +83,31 @@ namespace DownGrade
             Position += moveVector * velocity;
         }
 
-        void Shoot()
+        void Shoot(Vector2 shipMove)
         {
             Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet);
             bullet.Scale = 0.5f;
-            bullet.speed = 5f;
-            bullet.Position = Position;
+
+
+            Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
+
+            bullet.speed = 8f;
+            bullet.Position = Position + meh * fireOffset;
             bullet.Rotation = Rotation;
+
+            
+
         }
 
         public override void Collide(Sprite s)
         {
-            //collide
+            Hit(1);
+
+            if (currentHealth <= 0)
+            {
+                CollisionHandler.Instance.unregister(this);
+                GameObjectHandler.Instance.RemoveGameObject(this);
+            }
         }
 
         public void LeftStickMove(Vector2 moveVector)
@@ -106,6 +130,50 @@ namespace DownGrade
 
         public void RightTriggerPressed(float pressure)
         {
+        }
+
+        private void Hit(int damage)
+        {
+            if (currentShield == -1 && currentHealth == -1)
+            {
+                currentShield = maxShield;
+                Debug.Print(Convert.ToString("Start shield: " + currentShield));
+                currentHealth = maxHealth;            
+            }
+
+            if (currentHealth > 0 && currentShield > 0)
+            {
+                currentShield -= damage;
+                if (currentShield == 0)
+                {
+                    shield.Scale = 0f;
+                }else{
+                    shield.Scale -= (maxShield - damage) / 90f;
+                }
+            }
+            else
+            {
+                currentHealth -= damage;
+                if (currentHealth == 0)
+                {
+                    health.Scale = 0f;
+                }
+                else
+                {
+                    health.Scale -= (maxHealth - damage) / 90f;
+                }
+            }
+            
+        }
+
+        private void drawResources()
+        {
+            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar);
+            health.Position = new Vector2(231, 582);
+            health.Scale = 1f;
+            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar);
+            shield.Position = new Vector2(14, 582);
+            shield.Scale = 1f;
         }
     }
 }

@@ -64,14 +64,21 @@ namespace DownGrade
 
             //Load textures
 
+            
+
             //Make gameobjects
             Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig1);
             _asteroid.Scale = 0.7f;
 
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
+            _rocket.maxHealth = 10;
+            _rocket.maxShield = 10;
             _rocket.Scale = 0.7f;
             _rocket.Position = new Vector2(100, 250);
-            
+
+            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI);
+            ui.Position = new Vector2(0, 520);
+
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
             inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
@@ -125,11 +132,14 @@ namespace DownGrade
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
             {
                 sprite.Draw(gameTime, spriteBatch);
             }
+
+
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -12,7 +12,7 @@ namespace DownGrade
     class Robot : Sprite, IInputGamePadLeftStick
     {
         public Robot(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position)
+            : base(spriteTexture, position, 0)
         {
             CollisionHandler.Instance.register(this);
         }

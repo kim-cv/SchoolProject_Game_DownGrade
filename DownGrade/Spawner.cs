@@ -20,7 +20,10 @@ namespace DownGrade
             Bullet,
             Robot,
             Rocket,
-            Ufo
+            Ufo,
+            UI,
+            Healthbar,
+            Shieldbar
         }
 
         private Game GameReference = null;
@@ -119,6 +122,21 @@ namespace DownGrade
                     {
                         texture = GameReference.Content.Load<Texture2D>("UFO.png");
                         return new Ufo(texture, new Vector2());
+                    }
+                case TypeOfGameObject.UI:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("UI.png");
+                        return new UI(texture, new Vector2());
+                    }
+                case TypeOfGameObject.Healthbar:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("HealthFill.png");
+                        return new Healthbar(texture, new Vector2());
+                    }
+                case TypeOfGameObject.Shieldbar:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("ShieldFill.png");
+                        return new Shieldbar(texture, new Vector2());
                     }
                 default:
                     {

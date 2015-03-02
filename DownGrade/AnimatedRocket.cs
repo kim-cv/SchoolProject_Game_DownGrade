@@ -25,7 +25,7 @@ namespace DownGrade
         }
 
         public AnimatedRocket(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position)
+            : base(spriteTexture, position, 2)
         {
             // set sourcerectangle
             SourceRectangle = new Rectangle(0, 0, 455, 795);

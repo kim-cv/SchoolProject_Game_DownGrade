@@ -10,16 +10,19 @@ namespace DownGrade
 {
     public class Sprite
     {
-        public Sprite(Texture2D spriteTexture, Vector2 position)
+        public Sprite(Texture2D spriteTexture, Vector2 position, float layer)
         {
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
+            Layer = layer;
 
         }
         public virtual float Scale { get; set; }
         public Texture2D SpriteTexture { get; set; }
         public virtual Rectangle SourceRectangle { get; set; }
+
+        public float Layer { get; set; }
 
         public virtual float Rotation { get; set; }
 
@@ -74,7 +77,7 @@ namespace DownGrade
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, 0f);
+            spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, new Vector2(Scale, Scale), SpriteEffect, Layer);
         }
     }
 }
