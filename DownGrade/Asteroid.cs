@@ -35,6 +35,7 @@ namespace DownGrade
 
                 Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64);
                 _asteroid.Position = Position;
+                _asteroid.Scale = Scale;
 
                 GameObjectHandler.Instance.RemoveGameObject(this);
 
