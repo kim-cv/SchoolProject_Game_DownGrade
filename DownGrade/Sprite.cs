@@ -15,7 +15,7 @@ namespace DownGrade
             this.SpriteTexture = spriteTexture;
             this.Position = position;
             Scale = 1;
-            Layer = layer;
+            Layer = layer;           
 
         }
         public virtual float Scale { get; set; }
@@ -72,7 +72,6 @@ namespace DownGrade
 
         public virtual void Update(GameTime gameTime)
         {
-            // sprite logic goes here...
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)

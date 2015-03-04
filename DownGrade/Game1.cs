@@ -67,8 +67,9 @@ namespace DownGrade
             
 
             //Make gameobjects
-            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig1);
-            _asteroid.Scale = 0.7f;
+            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
+            //Asteroid_Explosion _asteroid1 = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64);
+            
 
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
             _rocket.maxHealth = 10;

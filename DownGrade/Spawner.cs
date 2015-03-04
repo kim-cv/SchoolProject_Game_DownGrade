@@ -11,6 +11,8 @@ namespace DownGrade
     {
         public enum TypeOfGameObject
         {
+            AsteroidBig_Explosion_64,
+            AsteroidBig_64,
             AsteroidBig1,
             AsteroidBig2,
             AsteroidMedium1,
@@ -73,6 +75,16 @@ namespace DownGrade
             Texture2D texture;
             switch (typeOfObject)
             {
+                case TypeOfGameObject.AsteroidBig_64:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Asteroid_64x64.png");
+                        return new Asteroid(texture, new Vector2());
+                    }
+                case TypeOfGameObject.AsteroidBig_Explosion_64:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Asteroid_Explosion_64x64.png");
+                        return new Asteroid_Explosion(texture, new Vector2());
+                    }
                 case TypeOfGameObject.AsteroidBig1:
                     {
                         texture = GameReference.Content.Load<Texture2D>("meteorGrey_big1.png");

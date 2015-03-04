@@ -210,7 +210,7 @@ namespace DownGrade
             throw new NotImplementedException();
         }
     }
-
+    
     class Animation : IUpdateable
     {
         private double _milisecondsSinceLastFrameUpdate = 0;
@@ -266,5 +266,4 @@ namespace DownGrade
         public event EventHandler<EventArgs> EnabledChanged;
         public event EventHandler<EventArgs> UpdateOrderChanged;
     }
-
 }
