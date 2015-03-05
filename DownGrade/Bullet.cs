@@ -26,6 +26,8 @@ namespace DownGrade
             Vector2 meh = new Vector2((float)deltaX, (float)deltaY);
             meh = meh * speed;
             Position += meh;
+
+            DestroyOnExit();
         }
 
         public override void Collide(Sprite s)
@@ -34,6 +36,18 @@ namespace DownGrade
             {
                 CollisionHandler.Instance.unregister(this);
                 GameObjectHandler.Instance.RemoveGameObject(this);
+            }
+        }
+
+        private void DestroyOnExit()
+        {
+            var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            if (PositionX < -100 || PositionY < -100 || PositionX > width + 100 || PositionY > height + 100)
+            {
+                GameObjectHandler.Instance.RemoveGameObject(this);
+                CollisionHandler.Instance.unregister(this);
             }
         }
     }
