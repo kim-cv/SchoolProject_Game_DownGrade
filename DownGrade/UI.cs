@@ -12,7 +12,7 @@ namespace DownGrade
     class UI : Sprite
     {
         public UI(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, 1f)
         {
 
         }

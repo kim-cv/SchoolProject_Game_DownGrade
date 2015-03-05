@@ -42,7 +42,7 @@ namespace DownGrade
         public int currentShield = -1;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, 0.8f)
         {
             CollisionHandler.Instance.register(this);
             Origin = new Vector2(32, 32);
