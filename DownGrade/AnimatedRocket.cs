@@ -153,10 +153,10 @@ namespace DownGrade
 
         void Shoot()
         {
-            Bullet bullet = (Bullet) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet);
+            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, Position);
             bullet.Scale = 0.02f;
             bullet.speed = 5f;
-            bullet.Position = Position;
+            //bullet.Position = Position;
             bullet.Rotation = Rotation;
         }
 

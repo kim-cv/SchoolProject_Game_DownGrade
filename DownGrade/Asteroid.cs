@@ -11,7 +11,7 @@ namespace DownGrade
 {
     class Asteroid : Sprite
     {
-        private float speed = 95f;
+        private float speed = 195f;
 
         public int brokenState = 1;
         private int maxBrokenState = 2;
@@ -23,9 +23,10 @@ namespace DownGrade
         {
             CollisionHandler.Instance.register(this);
 
-            //Position = new Vector2(200, 20);
+            //Position = new Vector2(50, 50);
 
-            direction = new Vector2(400, 400) - Position;
+            direction = new Vector2(200, 200) - Position;
+
             direction.Normalize();
         }
 
@@ -34,8 +35,7 @@ namespace DownGrade
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Fly asteroid FLY!
-            PositionX += direction.X * speed * deltaTime;
-            PositionY += direction.Y * speed * deltaTime;
+            Position += direction * speed * deltaTime;
         }
 
         public override void Collide(Sprite s)
@@ -45,18 +45,18 @@ namespace DownGrade
             {
                 CollisionHandler.Instance.unregister(this);
 
-                Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64);
-                _asteroid.Position = Position;
+                Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, Position);
+                //_asteroid.Position = Position;
                 _asteroid.Scale = Scale;
 
                 GameObjectHandler.Instance.RemoveGameObject(this);
 
                 if (brokenState < maxBrokenState)
                 {
-                    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
-                    a.brokenState = (brokenState+1);
-                    a.Position = Position;
-                    a.Scale = 0.5f;
+                    //Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
+                    //a.brokenState = (brokenState+1);
+                    //a.Position = Position;
+                    //a.Scale = 0.5f;
                 }
             }
         }

@@ -27,6 +27,7 @@ namespace DownGrade
 
         private double _msSinceLastAsteroid;
         private float _asteroidDelay = 1000;
+        Random rnd = new Random();
 
         public Game1()
             : base()
@@ -102,14 +103,14 @@ namespace DownGrade
             
 
             //Make gameobjects
-            Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
+            Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(100, 250));
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
             _rocket.Scale = 0.7f;
-            _rocket.Position = new Vector2(100, 250);
+            //_rocket.Position = new Vector2(100, 250);
 
-            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI);
-            ui.Position = new Vector2(0, 520);
+            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 520));
+            //ui.Position = new Vector2(0, 520);
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
@@ -153,7 +154,42 @@ namespace DownGrade
             //Random asteroids 1 every second
             if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
             {
-                Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
+                int side = rnd.Next(1, 4);
+                int amount = rnd.Next(1280);
+                Vector2 v = new Vector2();
+                switch (side)
+                {
+                    case 1:
+                    {
+                        //top
+                        v.Y = -100;
+                        v.X = amount;
+                       break; 
+                    }
+                    case 2:
+                    {
+                        //bund
+                        v.Y = 1280 + 100;
+                        v.X = amount;
+                        break;
+                    }
+                    case 3:
+                    {
+                        //Venstre
+                        v.Y = amount;
+                        v.X = -100;
+                        break;
+                    }
+                    case 4:
+                    {
+                        //Hojre
+                        v.Y = amount;
+                        v.X = 1280 + 100;
+                        break;
+                    }
+                }
+
+                Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
                 _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
             }
             
@@ -173,13 +209,13 @@ namespace DownGrade
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
             foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
             {
                 sprite.Draw(gameTime, spriteBatch);
             }
 
-            spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             
             spriteBatch.End();
 

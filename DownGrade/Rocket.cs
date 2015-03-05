@@ -151,14 +151,12 @@ namespace DownGrade
 
         void Shoot(Vector2 shipMove)
         {
-            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet);
-            bullet.Scale = 0.5f;
-
-
             Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
+            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * fireOffset));
+            bullet.Scale = 0.5f;
             bullet.speed = 8f;
-            bullet.Position = Position + meh * fireOffset;
+            //bullet.Position = Position + meh * fireOffset;
             bullet.Rotation = Rotation;
 
         }
@@ -246,11 +244,11 @@ namespace DownGrade
 
         private void drawResources()
         {
-            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar);
-            health.Position = new Vector2(231, 582);
+            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar, new Vector2(231, 582));
+            //health.Position = new Vector2(231, 582);
             health.Scale = 1f;
-            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar);
-            shield.Position = new Vector2(14, 582);
+            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(14, 582));
+            //shield.Position = new Vector2(14, 582);
             shield.Scale = 1f;
         }
 
