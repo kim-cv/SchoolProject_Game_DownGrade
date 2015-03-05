@@ -75,11 +75,6 @@ namespace DownGrade
             //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //If pressing Space - shoot
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
-            {
-                Shoot(moveVector);
-            }
 
             //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
