@@ -257,8 +257,8 @@ namespace DownGrade
         //Checks if object is at the edge of screen, and makes it stay inside!
         private void StayInsideSCreen()
         {
-            var width = 1280;
-            var height = 720;
+            var width = 800;
+            var height = 600;
 
             //Maybe (SpriteTexture.Height * 'sprite scale') for more exact check
             var spriteSize = SpriteTexture.Height;
@@ -272,12 +272,12 @@ namespace DownGrade
             if (PositionX > width - ((spriteSize) / 2))
                 Position = new Vector2(width - ((spriteSize) / 2), PositionY);
 
-            if (PositionY > height - ((spriteSize) / 2))
-                Position = new Vector2(PositionX, height - ((spriteSize) / 2));
+            //if (PositionY > height - ((spriteSize) / 2))
+            //    Position = new Vector2(PositionX, height - ((spriteSize) / 2));
 
             //Get GUI height -> 'height - guiHeight' = YES SIR!
-            //if (PositionY > 720)
-            //    Position = new Vector2(PositionX, 720);
+            if (PositionY > 500)
+                Position = new Vector2(PositionX, 500);
         }
     }
 }
