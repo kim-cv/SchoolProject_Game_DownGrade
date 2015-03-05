@@ -13,7 +13,7 @@ namespace DownGrade
     {
 
         public Healthbar(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 1)
+            : base(spriteTexture, position, 0.99f)
         {
 
         }

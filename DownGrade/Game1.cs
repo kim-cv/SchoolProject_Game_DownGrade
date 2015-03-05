@@ -133,7 +133,7 @@ namespace DownGrade
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
             foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
             {
                 sprite.Draw(gameTime, spriteBatch);
