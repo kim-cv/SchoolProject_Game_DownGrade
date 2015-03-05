@@ -70,6 +70,7 @@ namespace DownGrade
             int h = 720;
             graphics.IsFullScreen = false;
             Window.IsBorderless = false;
+
             Window.Position = new Point((ScreenWidth / 2) - (w / 2), (ScreenHeight / 2) - (h / 2));
             
             graphics.PreferredBackBufferWidth = w;

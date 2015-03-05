@@ -41,8 +41,8 @@ namespace DownGrade
 
         private void DestroyOnExit()
         {
-            var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            var width = 800;
+            var height = 600;
 
             if (PositionX < -100 || PositionY < -100 || PositionX > width + 100 || PositionY > height + 100)
             {

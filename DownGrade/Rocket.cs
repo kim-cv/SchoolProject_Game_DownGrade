@@ -74,10 +74,10 @@ namespace DownGrade
             }
 
             //MACHINE GUN MADNESS!!!
-            //if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            //{
-            //    Shoot(moveVector);
-            //}
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+            {
+                Shoot(moveVector);
+            }
 
             //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -257,8 +257,8 @@ namespace DownGrade
         //Checks if object is at the edge of screen, and makes it stay inside!
         private void StayInsideSCreen()
         {
-            var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            var width = 800;
+            var height = 600;
 
             //Maybe (SpriteTexture.Height * 'sprite scale') for more exact check
             var spriteSize = SpriteTexture.Height;
@@ -276,8 +276,8 @@ namespace DownGrade
             //    Position = new Vector2(PositionX, height - ((spriteSize) / 2));
 
             //Get GUI height -> 'height - guiHeight' = YES SIR!
-            if (PositionY > 490)
-                Position = new Vector2(PositionX, 490);
+            if (PositionY > 500)
+                Position = new Vector2(PositionX, 500);
         }
     }
 }
