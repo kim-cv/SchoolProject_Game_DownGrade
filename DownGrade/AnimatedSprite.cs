@@ -52,10 +52,13 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.TotalMilliseconds > _milisecondsSinceLastFrameUpdate + Delay)
+            if (_frames.Count > 0)
             {
-                SourceRectangle = NextFrame();
-                _milisecondsSinceLastFrameUpdate = gameTime.TotalGameTime.TotalMilliseconds;
+                if (gameTime.TotalGameTime.TotalMilliseconds > _milisecondsSinceLastFrameUpdate + Delay)
+                {
+                    SourceRectangle = NextFrame();
+                    _milisecondsSinceLastFrameUpdate = gameTime.TotalGameTime.TotalMilliseconds;
+                }
             }
         }
 

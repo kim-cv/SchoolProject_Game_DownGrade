@@ -12,8 +12,17 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DownGrade
 {
-    class Rocket : Sprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
+    class Rocket : AnimatedSprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
     {
+        //Animation State
+        private State _lastState;
+        private State _state = State.Idle;
+        public enum State
+        {
+            Flying,
+            Idle
+        }
+
         private KeyboardState _keyState;
         private GamePadState _padState;
 
@@ -36,30 +45,48 @@ namespace DownGrade
             : base(spriteTexture, position, 0)
         {
             CollisionHandler.Instance.register(this);
-            Origin = new Vector2(SpriteTexture.Width / 2f, SpriteTexture.Height / 2f);
+            Origin = new Vector2(32, 32);
             drawResources();
+
+
+            SourceRectangle = new Rectangle(0, 0, 64, 64);
         }
 
         public override void Update(GameTime gameTime)
         {
+            //Run base Update
+            base.Update(gameTime);
+
+            //Get ship rotation
             var deltaX = Math.Sin(Rotation);
             var deltaY = -Math.Cos(Rotation);
             Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed && _padState.Buttons.X == ButtonState.Released)
+            //If pressing X - shoot
+            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed && _padState.Buttons.X == ButtonState.Released) { 
                 Shoot(moveVector);
+            }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
+            //If pressing Space - shoot
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)){
                 Shoot(moveVector);
+            }
 
+            //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)) Shoot(moveVector);
+            //If pressing Space - shoot
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
+            {
+                Shoot(moveVector);
+            }
 
+            //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
             _padState = GamePad.GetState(PlayerIndex.One);
 
 
+            //Move & Rotate
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
             if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.1f)
@@ -67,10 +94,12 @@ namespace DownGrade
                 if (velocity < maxSpeed)
                 {
                     velocity += acceleration * delta;
+                    _state = State.Flying;
                 }
             }
             else
             {
+                _state = State.Idle;
                 if (velocity > 0)
                 {
                     velocity -= de_acceleration * delta;
@@ -81,6 +110,39 @@ namespace DownGrade
                 }
             }
             Position += moveVector * velocity;
+
+
+            //Which animation should play? based on state
+            if (_lastState != _state)
+            {
+                switch (_state)
+                {
+                    case State.Idle:
+                        {
+                            List<Rectangle> tempFrames = new List<Rectangle>();
+                            tempFrames.Add(new Rectangle(128, 0, 64, 64));
+                            tempFrames.Add(new Rectangle(192, 0, 64, 64));
+                            Frames = tempFrames;
+
+                            Delay = 75;
+                            Loop = true;
+                            break;
+                        }
+                    case State.Flying:
+                        {
+                            List<Rectangle> tempFrames = new List<Rectangle>();
+                            tempFrames.Add(new Rectangle(0, 0, 64, 64));
+                            tempFrames.Add(new Rectangle(64, 0, 64, 64));
+                            Frames = tempFrames;
+
+                            Delay = 75;
+                            Loop = true;
+                            break;
+                        }
+                }
+
+                _lastState = _state;
+            }
         }
 
         void Shoot(Vector2 shipMove)
@@ -94,8 +156,6 @@ namespace DownGrade
             bullet.speed = 8f;
             bullet.Position = Position + meh * fireOffset;
             bullet.Rotation = Rotation;
-
-            
 
         }
 
@@ -130,6 +190,20 @@ namespace DownGrade
 
         public void RightTriggerPressed(float pressure)
         {
+            if (pressure > 0.1f)
+            {
+                var deltaX = Math.Sin(Rotation);
+                var deltaY = -Math.Cos(Rotation);
+                Vector2 newVector = new Vector2((float)deltaX, (float)deltaY);
+                newVector = newVector * pressure;
+                Position += newVector;
+
+                _state = State.Flying;
+            }
+            else
+            {
+                _state = State.Idle;
+            }
         }
 
         private void Hit(int damage)

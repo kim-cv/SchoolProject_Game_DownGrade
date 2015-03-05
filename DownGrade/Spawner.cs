@@ -127,7 +127,7 @@ namespace DownGrade
                     }
                 case TypeOfGameObject.Rocket:
                     {
-                        texture = GameReference.Content.Load<Texture2D>("playerShip1_red.png");
+                        texture = GameReference.Content.Load<Texture2D>("Player_1_64x64.png");
                         return new Rocket(texture, new Vector2());
                     }
                 case TypeOfGameObject.Ufo:
