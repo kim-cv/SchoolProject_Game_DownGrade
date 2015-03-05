@@ -41,10 +41,10 @@ namespace DownGrade
         }
 
         public AnimatedSprite(Texture2D spriteTexture, Vector2 position, float layer)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, layer)
         {
-            this.SpriteTexture = spriteTexture;
-            this.Position = position;
+            SpriteTexture = spriteTexture;
+            Position = position;
             Scale = 1;
             Layer = layer;
         }
@@ -71,12 +71,12 @@ namespace DownGrade
                 if (SourceRectangle.IsEmpty)
                 {
                     // No, so draw the entire sprite texture
-                    spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(SpriteTexture, Position, null, Color.White, Rotation, Origin, Scale, SpriteEffects.None, Layer);
                 }
                 else
                 {
                     // Yes, so just draw the specified SourceRect
-                    spriteBatch.Draw(SpriteTexture, Position, SourceRectangle, Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(SpriteTexture, Position, SourceRectangle, Color.White, Rotation, Origin, Scale, SpriteEffects.None, Layer);
                 }
             }
         }
