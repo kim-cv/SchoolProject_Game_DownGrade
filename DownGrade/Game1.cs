@@ -25,6 +25,9 @@ namespace DownGrade
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private double _msSinceLastAsteroid;
+        private float _asteroidDelay = 1000;
+
         public Game1()
             : base()
         {
@@ -63,12 +66,14 @@ namespace DownGrade
         {
             // TODO: Add your initialization logic here
             //Set game size
+            int w = 1280;
+            int h = 720;
             graphics.IsFullScreen = false;
             Window.IsBorderless = false;
-            Window.Position = new Point((ScreenWidth / 2) - (1280 / 2), (ScreenHeight / 2) - (720 / 2));
-
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            Window.Position = new Point((ScreenWidth / 2) - (w / 2), (ScreenHeight / 2) - (h / 2));
+            
+            graphics.PreferredBackBufferWidth = w;
+            graphics.PreferredBackBufferHeight = h;
 
             graphics.ApplyChanges();
 
@@ -96,9 +101,6 @@ namespace DownGrade
             
 
             //Make gameobjects
-            Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
-            
-
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
@@ -145,6 +147,15 @@ namespace DownGrade
             {
                 sprite.Update(gameTime);
             }
+
+
+            //Random asteroids 1 every second
+            if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
+            {
+                Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
+                _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+            
 
             CollisionHandler.Instance.Update(gameTime);
             inputController1.Update(gameTime);

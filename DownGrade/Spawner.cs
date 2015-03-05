@@ -58,7 +58,7 @@ namespace DownGrade
 
             if (gameObject != null)
             {
-                gameObject.Position = new Vector2(xPosition, yPosition);
+                //gameObject.Position = new Vector2(xPosition, yPosition);
                 GameObjectHandler.Instance.AddGameObject(gameObject);
             }
             else

@@ -11,19 +11,31 @@ namespace DownGrade
 {
     class Asteroid : Sprite
     {
+        private float speed = 95f;
 
         public int brokenState = 1;
         private int maxBrokenState = 2;
+
+        private Vector2 direction;
 
         public Asteroid(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
+
+            //Position = new Vector2(200, 20);
+
+            direction = new Vector2(400, 400) - Position;
+            direction.Normalize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            PositionY++;
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Fly asteroid FLY!
+            PositionX += direction.X * speed * deltaTime;
+            PositionY += direction.Y * speed * deltaTime;
         }
 
         public override void Collide(Sprite s)
@@ -43,6 +55,7 @@ namespace DownGrade
                 {
                     Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
                     a.brokenState = (brokenState+1);
+                    a.Position = Position;
                     a.Scale = 0.5f;
                 }
             }
