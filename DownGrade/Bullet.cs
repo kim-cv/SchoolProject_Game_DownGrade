@@ -14,7 +14,7 @@ namespace DownGrade
         public float speed;
 
         public Bullet(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
         }

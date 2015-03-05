@@ -16,7 +16,7 @@ namespace DownGrade
         private int maxBrokenState = 2;
 
         public Asteroid(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
         }

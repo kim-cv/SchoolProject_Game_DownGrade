@@ -1,6 +1,7 @@
 ﻿#region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
+using System.Runtime.InteropServices;
 
 namespace DownGrade
 {
@@ -18,6 +20,7 @@ namespace DownGrade
     {
         private InputController inputController1;
         private InputController inputController2;
+        private Texture2D backgroundTexture;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -35,12 +38,38 @@ namespace DownGrade
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter,
+            int X, int Y, int cx, int cy, int uFlags);
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int Which);
+
+        private const int SM_CXSCREEN = 0;
+        private const int SM_CYSCREEN = 1;
+        private IntPtr HWND_TOP = IntPtr.Zero;
+        private const int SWP_SHOWWINDOW = 64;
+
+        public int ScreenWidth
+        {
+            get { return GetSystemMetrics(SM_CXSCREEN); }
+        }
+        public int ScreenHeight
+        {
+            get { return GetSystemMetrics(SM_CYSCREEN); }
+        }
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
             //Set game size
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.IsFullScreen = false;
+            Window.IsBorderless = false;
+            Window.Position = new Point((ScreenWidth / 2) - (1280 / 2), (ScreenHeight / 2) - (720 / 2));
+
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -63,12 +92,11 @@ namespace DownGrade
             // TODO: use this.Content to load your game content here
 
             //Load textures
-
+            backgroundTexture = Content.Load<Texture2D>("Background.png");
             
 
             //Make gameobjects
             Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
-            //Asteroid_Explosion _asteroid1 = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64);
             
 
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
@@ -139,7 +167,7 @@ namespace DownGrade
                 sprite.Draw(gameTime, spriteBatch);
             }
 
-
+            spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             
             spriteBatch.End();
 

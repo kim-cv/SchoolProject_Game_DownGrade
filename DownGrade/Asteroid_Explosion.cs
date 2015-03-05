@@ -12,7 +12,7 @@ namespace DownGrade
     class Asteroid_Explosion : AnimatedSprite
     {
         public Asteroid_Explosion(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0)
+            : base(spriteTexture, position, 0.2f)
         {
             // set sourcerectangle
             SourceRectangle = new Rectangle(0, 0, 64, 64);
