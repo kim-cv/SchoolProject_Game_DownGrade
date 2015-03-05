@@ -75,6 +75,8 @@ namespace DownGrade
             //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            StayInsideSCreen();
+
 
             //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
@@ -243,6 +245,32 @@ namespace DownGrade
             shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar);
             shield.Position = new Vector2(14, 582);
             shield.Scale = 1f;
+        }
+
+        //Checks if object is at the edge of screen, and makes it stay inside!
+        private void StayInsideSCreen()
+        {
+            var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            //Maybe (SpriteTexture.Height * 'sprite scale') for more exact check
+            var spriteSize = SpriteTexture.Height;
+
+            if (PositionX < 0 + ((spriteSize) / 2))
+                Position = new Vector2(0 + ((spriteSize) / 2), PositionY);
+
+            if (PositionY < 0 + ((spriteSize) / 2))
+                Position = new Vector2(PositionX, 0 + ((spriteSize) / 2));
+
+            if (PositionX > width - ((spriteSize) / 2))
+                Position = new Vector2(width - ((spriteSize) / 2), PositionY);
+
+            //if (PositionY > height - ((spriteSize) / 2))
+            //    Position = new Vector2(PositionX, height - ((spriteSize) / 2));
+
+            //Get GUI height -> 'height - guiHeight' = YES SIR!
+            if (PositionY > 490)
+                Position = new Vector2(PositionX, 490);
         }
     }
 }
