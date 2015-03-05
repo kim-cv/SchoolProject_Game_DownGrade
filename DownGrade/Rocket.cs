@@ -163,13 +163,16 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            Hit(1);
+                Hit(1);
 
-            if (currentHealth <= 0)
-            {
-                CollisionHandler.Instance.unregister(this);
-                GameObjectHandler.Instance.RemoveGameObject(this);
-            }
+                if (currentHealth <= 0)
+                {
+                    Asteroid_Explosion _asteroid =
+                        (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, new Vector2(PositionX - 60f, PositionY - 60f));
+                    _asteroid.Scale = 2f;
+                    CollisionHandler.Instance.unregister(this);
+                    GameObjectHandler.Instance.RemoveGameObject(this);
+                }
         }
 
         public void LeftStickMove(Vector2 moveVector)
@@ -244,19 +247,17 @@ namespace DownGrade
 
         private void drawResources()
         {
-            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar, new Vector2(231, 582));
-            //health.Position = new Vector2(231, 582);
+            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar, new Vector2(225, 702));
             health.Scale = 1f;
-            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(14, 582));
-            //shield.Position = new Vector2(14, 582);
+            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(8, 702));
             shield.Scale = 1f;
         }
 
         //Checks if object is at the edge of screen, and makes it stay inside!
         private void StayInsideSCreen()
         {
-            var width = 800;
-            var height = 600;
+            var width = 1280;
+            var height = 800;
 
             //Maybe (SpriteTexture.Height * 'sprite scale') for more exact check
             var spriteSize = SpriteTexture.Height;
@@ -274,8 +275,8 @@ namespace DownGrade
             //    Position = new Vector2(PositionX, height - ((spriteSize) / 2));
 
             //Get GUI height -> 'height - guiHeight' = YES SIR!
-            if (PositionY > 500)
-                Position = new Vector2(PositionX, 500);
+            if (PositionY > 605)
+                Position = new Vector2(PositionX, 605);
         }
     }
 }

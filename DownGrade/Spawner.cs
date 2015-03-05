@@ -153,7 +153,7 @@ namespace DownGrade
                     }
                 case TypeOfGameObject.UI:
                     {
-                        texture = GameReference.Content.Load<Texture2D>("UI.png");
+                        texture = GameReference.Content.Load<Texture2D>("UI_1280x720.png");
                         return new UI(texture, pos);
                     }
                 case TypeOfGameObject.Healthbar:

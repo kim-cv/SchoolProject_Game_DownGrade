@@ -99,18 +99,19 @@ namespace DownGrade
             // TODO: use this.Content to load your game content here
 
             //Load textures
-            backgroundTexture = Content.Load<Texture2D>("Background.png");
+            backgroundTexture = Content.Load<Texture2D>("Background_1280x720.png");
             
 
             //Make gameobjects
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(100, 250));
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
+
             _rocket.Scale = 0.7f;
             //_rocket.Position = new Vector2(100, 250);
 
-            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 520));
-            //ui.Position = new Vector2(0, 520);
+            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
+
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
