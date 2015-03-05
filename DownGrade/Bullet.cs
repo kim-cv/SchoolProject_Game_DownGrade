@@ -41,8 +41,10 @@ namespace DownGrade
 
         private void DestroyOnExit()
         {
-            var width = 800;
-            var height = 600;
+            //var width = 800;
+            //var height = 600;
+            var width = 1280;
+            var height = 720;
 
             if (PositionX < -100 || PositionY < -100 || PositionX > width + 100 || PositionY > height + 100)
             {
