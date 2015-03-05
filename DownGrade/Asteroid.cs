@@ -23,11 +23,21 @@ namespace DownGrade
         {
             CollisionHandler.Instance.register(this);
 
-            //Position = new Vector2(50, 50);
 
-            direction = new Vector2(200, 200) - Position;
+        }
 
-            direction.Normalize();
+        public void Direction(string type="")
+        {
+            if (type == "normal")
+            {
+                direction = new Vector2(200, 200) - Position;
+                direction.Normalize();
+            }
+            else
+            {
+                direction = new Vector2(Spawner.Instance.rnd.Next(500), Spawner.Instance.rnd.Next(500)) - Position;
+                direction.Normalize();                
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -53,10 +63,13 @@ namespace DownGrade
 
                 if (brokenState < maxBrokenState)
                 {
-                    //Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
-                    //a.brokenState = (brokenState+1);
-                    //a.Position = Position;
-                    //a.Scale = 0.5f;
+                    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
+                    a.Scale = 0.5f;
+                    a.Direction();
+
+                    Asteroid b = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
+                    b.Scale = 0.5f;
+                    b.Direction();
                 }
             }
         }

@@ -191,6 +191,7 @@ namespace DownGrade
                 }
 
                 Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
+                a.Direction("normal");
                 _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
             }
             

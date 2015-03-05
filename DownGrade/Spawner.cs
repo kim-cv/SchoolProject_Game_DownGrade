@@ -29,7 +29,7 @@ namespace DownGrade
         }
 
         private Game GameReference = null;
-        private Random rnd = new Random();
+        public Random rnd = new Random();
 
         private static readonly Spawner _instance = new Spawner();
         public static Spawner Instance
