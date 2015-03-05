@@ -25,7 +25,7 @@ namespace DownGrade
 
             //Position = new Vector2(200, 20);
 
-            direction = new Vector2(400, 400) - Position;
+            direction = new Vector2(0, 400) - Position;
             direction.Normalize();
         }
 

@@ -98,18 +98,17 @@ namespace DownGrade
             // TODO: use this.Content to load your game content here
 
             //Load textures
-            backgroundTexture = Content.Load<Texture2D>("Background.png");
+            backgroundTexture = Content.Load<Texture2D>("Background_1280x720.png");
             
 
             //Make gameobjects
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket);
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
-            _rocket.Scale = 0.7f;
             _rocket.Position = new Vector2(100, 250);
 
             UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI);
-            ui.Position = new Vector2(0, 520);
+            ui.Position = new Vector2(0, 640);
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
@@ -150,11 +149,18 @@ namespace DownGrade
             }
 
 
+            Random rand = new Random();
+            float rand_witdh = rand.Next(0, 1280);
+            float rand_height = -64f;
+
+
             //Random asteroids 1 every second
             if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
             {
                 Asteroid _asteroid = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64);
                 _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
+                _asteroid.Position = new Vector2(rand_witdh, rand_height);
+                _asteroid.Position += new Vector2(2f);
             }
             
 
