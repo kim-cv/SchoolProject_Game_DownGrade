@@ -67,10 +67,17 @@ namespace DownGrade
                 Shoot(moveVector);
             }
 
-            //If pressing Space - shoot
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space)){
+            //If pressing Space - shoot             
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
+            {
                 Shoot(moveVector);
             }
+
+            //MACHINE GUN MADNESS!!!
+            //if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            //{
+            //    Shoot(moveVector);
+            //}
 
             //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;

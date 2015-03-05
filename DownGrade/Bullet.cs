@@ -44,8 +44,11 @@ namespace DownGrade
             var width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             var height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            if (PositionX < -50 || PositionY < -50 || PositionX > width + 50 || PositionY > height + 50)
+            if (PositionX < -100 || PositionY < -100 || PositionX > width + 100 || PositionY > height + 100)
+            {
                 GameObjectHandler.Instance.RemoveGameObject(this);
+                CollisionHandler.Instance.unregister(this);
+            }
         }
     }
 }
