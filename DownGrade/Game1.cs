@@ -21,6 +21,9 @@ namespace DownGrade
         private InputController inputController1;
         private InputController inputController2;
         private Texture2D backgroundTexture;
+        private Texture2D machinegun;
+        private Texture2D laser;
+        private Texture2D weapons;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -100,6 +103,11 @@ namespace DownGrade
 
             //Load textures
             backgroundTexture = Content.Load<Texture2D>("Background_1280x720.png");
+
+            //Temp GUI Weapon show
+            machinegun = Content.Load<Texture2D>("UI_Machinegun_Marked.png");
+            laser = Content.Load<Texture2D>("UI_Laser.png");
+            weapons = Content.Load<Texture2D>("GUI_Weapons.png");
             
 
             //Make gameobjects
@@ -218,6 +226,9 @@ namespace DownGrade
             }
 
             spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(weapons, new Vector2(230, 682), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(machinegun, new Vector2(370, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(laser, new Vector2(450, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
             
             spriteBatch.End();
 

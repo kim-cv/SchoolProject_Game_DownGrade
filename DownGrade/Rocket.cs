@@ -37,13 +37,13 @@ namespace DownGrade
 
         //Health
         private Healthbar health;
-        public int maxHealth;
-        public int currentHealth = -1;
+        public double maxHealth;
+        public double currentHealth = -1;
 
         //Shield
         private Shieldbar shield;
-        public int maxShield;
-        public int currentShield = -1;
+        public double maxShield;
+        public double currentShield = -1;
 
         //Weapon
         private int weapon = 1;
@@ -245,7 +245,7 @@ namespace DownGrade
             }
         }
 
-        private void Hit(int damage)
+        private void Hit(double damage)
         {
             if (currentShield == -1 && currentHealth == -1)
             {
@@ -258,9 +258,9 @@ namespace DownGrade
                 currentShield -= damage;
                 if (currentShield == 0)
                 {
-                    shield.Scale = 0f;
+                    shield.Position = new Vector2(shield.PositionX - 190, shield.PositionY);
                 }else{
-                    shield.Scale -= (maxShield - damage) / 90f;
+                    shield.Position = new Vector2(shield.PositionX - (float)((190 * damage) / maxShield), shield.PositionY);
                 }
             }
             else
@@ -269,23 +269,21 @@ namespace DownGrade
                         currentHealth -= damage;
                     if (currentHealth == 0)
                     {
-                        health.Scale = 0f;
+                        health.Position = new Vector2(health.PositionX - 190, health.PositionY);
                     }
                     else
                     {
-                        health.Scale -= (maxHealth - damage) / 90f;
+                        health.Position = new Vector2(health.PositionX - (float)((190 * damage) / maxHealth), health.PositionY);
                     }
                 }
-                
             }
-            
         }
 
         private void drawResources()
         {
-            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar, new Vector2(225, 702));
+            health = (Healthbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Healthbar, new Vector2(9, 702));
             health.Scale = 1f;
-            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(8, 702));
+            shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(9, 662));
             shield.Scale = 1f;
         }
 
