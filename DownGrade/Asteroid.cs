@@ -61,7 +61,8 @@ namespace DownGrade
 
                 GameObjectHandler.Instance.RemoveGameObject(this);
 
-                if (brokenState < maxBrokenState)
+
+                if (brokenState < maxBrokenState && s.GetType() != typeof(Rocket))
                 {
                     Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
                     a.Scale = 0.5f;

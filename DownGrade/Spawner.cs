@@ -25,7 +25,8 @@ namespace DownGrade
             Ufo,
             UI,
             Healthbar,
-            Shieldbar
+            Shieldbar,
+            Laser
         }
 
         private Game GameReference = null;
@@ -133,8 +134,13 @@ namespace DownGrade
                     }
                 case TypeOfGameObject.Bullet:
                     {
-                        texture = GameReference.Content.Load<Texture2D>("laserGreen10.png");
+                        texture = GameReference.Content.Load<Texture2D>("Bullet_green.png");
                         return new Bullet(texture, pos);
+                    }
+                case TypeOfGameObject.Laser:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Laser.png");
+                        return new Laser(texture, pos);
                     }
                 case TypeOfGameObject.Robot:
                     {

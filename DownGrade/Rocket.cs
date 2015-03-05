@@ -26,20 +26,27 @@ namespace DownGrade
         private KeyboardState _keyState;
         private GamePadState _padState;
 
+        //Movement
         private float acceleration = 5f;
         private float de_acceleration = 10f;
         private float velocity = 0f;
         private float maxSpeed = 5f;
         private float delta;
-        private float fireOffset = 11f;
+        private float machinegunFireOffset = 5f;
+        private float laserFireOffset = 40f;
 
+        //Health
         private Healthbar health;
         public int maxHealth;
         public int currentHealth = -1;
 
+        //Shield
         private Shieldbar shield;
         public int maxShield;
         public int currentShield = -1;
+
+        //Weapon
+        private int weapon = 1;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
@@ -77,6 +84,16 @@ namespace DownGrade
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
             {
                 Shoot(moveVector);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
+            {
+                weapon = 1;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D2) && _keyState.IsKeyUp(Keys.D2))
+            {
+                weapon = 2;
             }
 
             //Calculate delta time
@@ -151,19 +168,33 @@ namespace DownGrade
 
         void Shoot(Vector2 shipMove)
         {
-            Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
+            if (weapon == 1) { 
+                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
-            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * fireOffset));
-            bullet.Scale = 0.5f;
-            bullet.speed = 8f;
-            //bullet.Position = Position + meh * fireOffset;
-            bullet.Rotation = Rotation;
+                Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
+                bullet.Scale = 0.5f;
+                bullet.speed = 8f;
+                //bullet.Position = Position + meh * fireOffset;
+                bullet.Rotation = Rotation;
+            }else if (weapon == 2)
+            {
+                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
+                Laser laser = (Laser)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Laser, (Position + meh * laserFireOffset));
+                
+                //laser.speed = 8f;
+                //bullet.Position = Position + meh * fireOffset;
+                laser.Rotation = Rotation;
+            }
         }
 
         public override void Collide(Sprite s)
         {
+            if (s.GetType() != typeof(Rocket) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Laser))
+            {
+
                 Hit(1);
+                CollisionHandler.Instance.unregister(this);
 
                 if (currentHealth <= 0)
                 {
@@ -173,6 +204,9 @@ namespace DownGrade
                     CollisionHandler.Instance.unregister(this);
                     GameObjectHandler.Instance.RemoveGameObject(this);
                 }
+                CollisionHandler.Instance.register(this);
+            }
+            
         }
 
         public void LeftStickMove(Vector2 moveVector)
@@ -216,7 +250,6 @@ namespace DownGrade
             if (currentShield == -1 && currentHealth == -1)
             {
                 currentShield = maxShield;
-                Debug.Print(Convert.ToString("Start shield: " + currentShield));
                 currentHealth = maxHealth;            
             }
 
@@ -232,15 +265,18 @@ namespace DownGrade
             }
             else
             {
-                currentHealth -= damage;
-                if (currentHealth == 0)
-                {
-                    health.Scale = 0f;
+                if(currentHealth > 0){
+                        currentHealth -= damage;
+                    if (currentHealth == 0)
+                    {
+                        health.Scale = 0f;
+                    }
+                    else
+                    {
+                        health.Scale -= (maxHealth - damage) / 90f;
+                    }
                 }
-                else
-                {
-                    health.Scale -= (maxHealth - damage) / 90f;
-                }
+                
             }
             
         }
