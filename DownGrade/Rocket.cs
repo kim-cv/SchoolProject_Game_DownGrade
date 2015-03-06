@@ -14,6 +14,8 @@ namespace DownGrade
 {
     class Rocket : AnimatedSprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
     {
+        public string tag = "Rocket";
+
         //Animation State
         private State _lastState;
         private State _state = State.Idle;

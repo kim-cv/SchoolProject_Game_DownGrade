@@ -21,15 +21,23 @@ namespace DownGrade
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
-
-
         }
 
         public void Direction(string type = "")
         {
             if (type == "normal")
             {
-                direction = new Vector2(200, 200) - Position;
+                //Try get position of rocket
+                Sprite temp = GameObjectHandler.Instance.FindGameObject("Rocket");
+                if (temp != null)
+                {
+                    direction = GameObjectHandler.Instance.FindGameObject("").Position - Position;
+                }
+                else
+                {
+                    direction = new Vector2(200, 200) - Position; 
+                }
+
                 direction.Normalize();
             }
             else
@@ -63,14 +71,14 @@ namespace DownGrade
 
                 if (brokenState > 1 && s.GetType() != typeof(Rocket))
                 {
-                        for (int i = 0; i < brokenState; i++)
-                        {
-                            Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
-                            a.Scale = 0.5f;
-                            a.brokenState -= 1;
-                            a.Direction();
-                        }
-                    
+                    for (int i = 0; i < brokenState; i++)
+                    {
+                        Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
+                        a.Scale = 0.5f;
+                        a.brokenState -= 1;
+                        a.Direction();
+                    }
+
                 }
             }
         }

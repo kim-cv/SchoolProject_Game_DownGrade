@@ -30,10 +30,17 @@ namespace DownGrade
             return ListOfGameObjects;
         }
 
-        //public void FindGameObject(string gameObjectTag)
-        //{
-        //    //ListOfGameObjects.Add(gameObject);
-        //}
+        public Sprite FindGameObject(string gameObjectTag)
+        {
+            foreach (Sprite o in ListOfGameObjects)
+            {
+                if (o.GetType().ToString() == "DownGrade.Rocket")
+                {
+                    return o;
+                }
+            }
+            return null;
+        }
 
     }
 }
