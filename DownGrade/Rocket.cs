@@ -75,41 +75,17 @@ namespace DownGrade
             Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
 
 
-            //If pressing X - shoot
-            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed)
+            //If pressing 'X' or 'space' -> shoot
+            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (weapon == 1)
                 {
-                    if (_padState.Buttons.X == ButtonState.Released)
+                    if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
                     {
                         Shoot(moveVector);
                     }
                 }
 
-                if (weapon == 2)
-                {
-                    Shoot(moveVector);
-                }
-                if (weapon == 3)
-                {
-                    if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
-                    {
-                        Shoot(moveVector);
-                        _msSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
-                    }
-                }
-            }
-
-            //If pressing Space - shoot             
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                if (weapon == 1)
-                {
-                    if (_keyState.IsKeyUp(Keys.Space))
-                    {
-                        Shoot(moveVector);
-                    }
-                }
                 if (weapon == 2)
                 {
                     Shoot(moveVector);
