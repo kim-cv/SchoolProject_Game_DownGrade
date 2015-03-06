@@ -13,8 +13,7 @@ namespace DownGrade
     {
         private float speed = 195f;
 
-        public int brokenState = 1;
-        private int maxBrokenState = 2;
+        public int brokenState = 2;
 
         private Vector2 direction;
 
@@ -26,7 +25,7 @@ namespace DownGrade
 
         }
 
-        public void Direction(string type="")
+        public void Direction(string type = "")
         {
             if (type == "normal")
             {
@@ -36,7 +35,7 @@ namespace DownGrade
             else
             {
                 direction = new Vector2(Spawner.Instance.rnd.Next(500), Spawner.Instance.rnd.Next(500)) - Position;
-                direction.Normalize();                
+                direction.Normalize();
             }
         }
 
@@ -62,15 +61,16 @@ namespace DownGrade
                 GameObjectHandler.Instance.RemoveGameObject(this);
 
 
-                if (brokenState < maxBrokenState && s.GetType() != typeof(Rocket))
+                if (brokenState > 1 && s.GetType() != typeof(Rocket))
                 {
-                    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
-                    a.Scale = 0.5f;
-                    a.Direction();
-
-                    Asteroid b = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
-                    b.Scale = 0.5f;
-                    b.Direction();
+                        for (int i = 0; i < brokenState; i++)
+                        {
+                            Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, Position);
+                            a.Scale = 0.5f;
+                            a.brokenState -= 1;
+                            a.Direction();
+                        }
+                    
                 }
             }
         }
