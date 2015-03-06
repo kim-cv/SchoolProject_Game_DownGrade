@@ -1,4 +1,9 @@
-﻿#region Using Statements
+﻿using System.IO;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+
+#region Using Statements
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +23,9 @@ namespace DownGrade
     /// </summary>
     public class Game1 : Game
     {
+        SoundEffect soundEffect;
+        private Level_Game level;
+
         private InputController inputController1;
         private InputController inputController2;
         private Texture2D backgroundTexture;
@@ -37,6 +45,8 @@ namespace DownGrade
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            level = new Level_Game(this);
+            LevelHandler.Instance.ListOfLevels.Add(level);
         }
 
         /// <summary>
@@ -82,6 +92,8 @@ namespace DownGrade
 
             graphics.ApplyChanges();
 
+            level.Initialize();
+
             base.Initialize();
         }
 
@@ -91,39 +103,42 @@ namespace DownGrade
         /// </summary>
         protected override void LoadContent()
         {
-            inputController1 = new InputController(PlayerIndex.One);
-            //inputController2 = new InputController(PlayerIndex.Two);
+            level.LoadContent();
+            //soundEffect = Content.Load<SoundEffect>("meh.wav");
 
-            Spawner.Instance.SetGameReference(this);
+            //inputController1 = new InputController(PlayerIndex.One);
+            ////inputController2 = new InputController(PlayerIndex.Two);
 
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            //Spawner.Instance.SetGameReference(this);
 
-            // TODO: use this.Content to load your game content here
+            //// Create a new SpriteBatch, which can be used to draw textures.
+            //spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Load textures
-            backgroundTexture = Content.Load<Texture2D>("Background_1280x720.png");
+            //// TODO: use this.Content to load your game content here
 
-            //Temp GUI Weapon show
-            machinegun = Content.Load<Texture2D>("UI_Machinegun_Marked.png");
-            laser = Content.Load<Texture2D>("UI_Laser.png");
-            weapons = Content.Load<Texture2D>("GUI_Weapons.png");
+            ////Load textures
+            //backgroundTexture = Content.Load<Texture2D>("Background_1280x720.png");
+
+            ////Temp GUI Weapon show
+            //machinegun = Content.Load<Texture2D>("UI_Machinegun_Marked.png");
+            //laser = Content.Load<Texture2D>("UI_Laser.png");
+            //weapons = Content.Load<Texture2D>("GUI_Weapons.png");
             
 
-            //Make gameobjects
-            Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
-            _rocket.maxHealth = 10;
-            _rocket.maxShield = 10;
+            ////Make gameobjects
+            //Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
+            //_rocket.maxHealth = 10;
+            //_rocket.maxShield = 10;
 
-            _rocket.Scale = 0.7f;
-            //_rocket.Position = new Vector2(100, 250);
+            //_rocket.Scale = 0.7f;
+            ////_rocket.Position = new Vector2(100, 250);
 
-            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
+            //UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
 
 
-            //Controllers
-            inputController1.InputGamePadLeftStickListeners.Add(_rocket);
-            inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
+            ////Controllers
+            //inputController1.InputGamePadLeftStickListeners.Add(_rocket);
+            //inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
         }
 
         /// <summary>
@@ -133,6 +148,7 @@ namespace DownGrade
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            level.UnloadContent();
         }
 
         /// <summary>
@@ -142,70 +158,77 @@ namespace DownGrade
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            level.Update(gameTime);
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
-            // TODO: Add your update logic here
+            //// TODO: Add your update logic here
 
-            List<Sprite> tempSprites = new List<Sprite>();
+            //List<Sprite> tempSprites = new List<Sprite>();
 
-            foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
-            {
-                tempSprites.Add(sprite);
-            }
+            //foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
+            //{
+            //    tempSprites.Add(sprite);
+            //}
 
-            foreach (Sprite sprite in tempSprites)
-            {
-                sprite.Update(gameTime);
-            }
+            //foreach (Sprite sprite in tempSprites)
+            //{
+            //    sprite.Update(gameTime);
+            //}
 
 
-            //Random asteroids 1 every second
-            if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
-            {
-                int side = rnd.Next(1, 4);
-                int amount = rnd.Next(1280);
-                Vector2 v = new Vector2();
-                switch (side)
-                {
-                    case 1:
-                    {
-                        //top
-                        v.Y = -100;
-                        v.X = amount;
-                       break; 
-                    }
-                    case 2:
-                    {
-                        //bund
-                        v.Y = 1280 + 100;
-                        v.X = amount;
-                        break;
-                    }
-                    case 3:
-                    {
-                        //Venstre
-                        v.Y = amount;
-                        v.X = -100;
-                        break;
-                    }
-                    case 4:
-                    {
-                        //Hojre
-                        v.Y = amount;
-                        v.X = 1280 + 100;
-                        break;
-                    }
-                }
+            ////Random asteroids 1 every second
+            //if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
+            //{
+            //    //MediaPlayer.Volume = 1.0f;
+            //    //MediaPlayer.Play(soundEffect);
+            //    //soundEffect.Play();
 
-                Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
-                a.Direction("normal");
-                _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
-            }
+            //    int side = rnd.Next(1, 4);
+            //    int amount = rnd.Next(1280);
+            //    Vector2 v = new Vector2();
+            //    switch (side)
+            //    {
+            //        case 1:
+            //        {
+            //            //top
+            //            v.Y = -100;
+            //            v.X = amount;
+            //           break; 
+            //        }
+            //        case 2:
+            //        {
+            //            //bund
+            //            v.Y = 1280 + 100;
+            //            v.X = amount;
+            //            break;
+            //        }
+            //        case 3:
+            //        {
+            //            //Venstre
+            //            v.Y = amount;
+            //            v.X = -100;
+            //            break;
+            //        }
+            //        case 4:
+            //        {
+            //            //Hojre
+            //            v.Y = amount;
+            //            v.X = 1280 + 100;
+            //            break;
+            //        }
+            //    }
+
+            //    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
+            //    a.Direction("normal");
+            //    _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
+            //}
             
 
-            CollisionHandler.Instance.Update(gameTime);
-            inputController1.Update(gameTime);
+            //CollisionHandler.Instance.Update(gameTime);
+            //inputController1.Update(gameTime);
+
+
             //inputController2.Update(gameTime);
             base.Update(gameTime);
         }
@@ -217,20 +240,20 @@ namespace DownGrade
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
+            level.Draw(gameTime);
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
-            {
-                sprite.Draw(gameTime, spriteBatch);
-            }
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            //foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
+            //{
+            //    sprite.Draw(gameTime, spriteBatch);
+            //}
 
-            spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
-            spriteBatch.Draw(weapons, new Vector2(230, 682), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
-            spriteBatch.Draw(machinegun, new Vector2(370, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
-            spriteBatch.Draw(laser, new Vector2(450, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            //spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            //spriteBatch.Draw(weapons, new Vector2(230, 682), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            //spriteBatch.Draw(machinegun, new Vector2(370, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            //spriteBatch.Draw(laser, new Vector2(450, 675), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
             
-            spriteBatch.End();
+            //spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -42,7 +42,7 @@ namespace DownGrade
             }
             else
             {
-                direction = new Vector2(Spawner.Instance.rnd.Next(500), Spawner.Instance.rnd.Next(500)) - Position;
+                direction = new Vector2(Spawner.Instance.rnd.Next(1000), Spawner.Instance.rnd.Next(100)) - Position;
                 direction.Normalize();
             }
         }

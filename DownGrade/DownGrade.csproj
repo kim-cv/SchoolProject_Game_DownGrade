@@ -41,6 +41,8 @@
     <Compile Include="GameObjectHandler.cs" />
     <Compile Include="Healthbar.cs" />
     <Compile Include="Laser.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="LevelHandler.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Shieldbar.cs" />
     <Compile Include="Spawner.cs" />
@@ -77,6 +79,9 @@
     </Content>
     <Content Include="Content\Asteroid_Explosion_64x64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\audio_greenBullet.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -155,6 +160,9 @@
     </Content>
     <Content Include="Content\laserRed16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\meh.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\meteorBrown_big1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -302,7 +310,6 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
