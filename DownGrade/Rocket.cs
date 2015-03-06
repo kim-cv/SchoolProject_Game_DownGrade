@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mime;
+using System.Security.Policy;
 using System.Text;
 using DownGrade.Framework;
 using Microsoft.Xna.Framework;
@@ -36,6 +37,8 @@ namespace DownGrade
         private float delta;
         private float machinegunFireOffset = 5f;
         private float laserFireOffset = 40f;
+        private float _bulletDelay = 100;
+        private double _msSinceLastBullet;
 
         //Health
         private Healthbar health;
@@ -71,26 +74,54 @@ namespace DownGrade
             var deltaY = -Math.Cos(Rotation);
             Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
 
+
             //If pressing X - shoot
-            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed && _padState.Buttons.X == ButtonState.Released) { 
-                Shoot(moveVector);
+            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed)
+            {
+                if (weapon == 1)
+                {
+                    if (_padState.Buttons.X == ButtonState.Released)
+                    {
+                        Shoot(moveVector);
+                    }
+                }
+
+                if (weapon == 2)
+                {
+                    Shoot(moveVector);
+                }
+                if (weapon == 3)
+                {
+                    if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
+                    {
+                        Shoot(moveVector);
+                        _msSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
+                }
             }
 
             //If pressing Space - shoot             
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _keyState.IsKeyUp(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                Shoot(moveVector);
-            }
-
-            //MACHINE GUN MADNESS!!!
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
-            {
-                Shoot(moveVector);
-            }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
-            {
-                Shoot(moveVector);
+                if (weapon == 1)
+                {
+                    if (_keyState.IsKeyUp(Keys.Space))
+                    {
+                        Shoot(moveVector);
+                    }
+                }
+                if (weapon == 2)
+                {
+                    Shoot(moveVector);
+                }
+                if (weapon == 3)
+                {
+                    if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
+                    {
+                        Shoot(moveVector);
+                        _msSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
@@ -101,6 +132,34 @@ namespace DownGrade
             if (Keyboard.GetState().IsKeyDown(Keys.D2) && _keyState.IsKeyUp(Keys.D2))
             {
                 weapon = 2;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D3) && _keyState.IsKeyUp(Keys.D3))
+            {
+                weapon = 3;
+            }
+
+            //Change weapon with left/right joystick shoulder buttons
+            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
+                _padState.Buttons.RightShoulder == ButtonState.Released)
+            {
+                if (weapon == 3)
+                    weapon = 1;
+                else
+                {
+                    weapon += 1;
+                }
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.LeftShoulder == ButtonState.Pressed &&
+                _padState.Buttons.LeftShoulder == ButtonState.Released)
+            {
+                if (weapon == 1)
+                    weapon = 3;
+                else
+                {
+                    weapon -= 1;
+                }
             }
 
             //Calculate delta time
@@ -183,7 +242,8 @@ namespace DownGrade
                 bullet.speed = 8f;
                 //bullet.Position = Position + meh * fireOffset;
                 bullet.Rotation = Rotation;
-            }else if (weapon == 2)
+            }
+            else if (weapon == 2)
             {
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
@@ -192,6 +252,16 @@ namespace DownGrade
                 //laser.speed = 8f;
                 //bullet.Position = Position + meh * fireOffset;
                 laser.Rotation = Rotation;
+            }
+            else if (weapon == 3)
+            {
+                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
+
+                Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.BulletRed, (Position + meh * machinegunFireOffset));
+                bullet.Scale = 0.5f;
+                bullet.speed = 8f;
+                //bullet.Position = Position + meh * fireOffset;
+                bullet.Rotation = Rotation;
             }
         }
 

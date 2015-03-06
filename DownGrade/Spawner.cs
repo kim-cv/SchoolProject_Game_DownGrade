@@ -20,6 +20,7 @@ namespace DownGrade
             AsteroidSmall1,
             AsteroidSmall2,
             Bullet,
+            BulletRed,
             Robot,
             Rocket,
             Ufo,
@@ -135,6 +136,11 @@ namespace DownGrade
                 case TypeOfGameObject.Bullet:
                     {
                         texture = GameReference.Content.Load<Texture2D>("Bullet_green.png");
+                        return new Bullet(texture, pos);
+                    }
+                case TypeOfGameObject.BulletRed:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Bullet_red.png");
                         return new Bullet(texture, pos);
                     }
                 case TypeOfGameObject.Laser:
