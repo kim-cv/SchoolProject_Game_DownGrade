@@ -88,6 +88,11 @@ namespace DownGrade
                 Shoot(moveVector);
             }
 
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+            {
+                Shoot(moveVector);
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
             {
                 weapon = 1;
