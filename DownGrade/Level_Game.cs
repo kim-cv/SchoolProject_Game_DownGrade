@@ -61,7 +61,7 @@ namespace DownGrade
 
 
             Spawner.Instance.SetGameReference(gameReference);
-            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(gameReference.GraphicsDevice);
 
@@ -77,14 +77,14 @@ namespace DownGrade
 
 
             //Make gameobjects
-            Rocket _rocket = (Rocket) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
+            Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
 
             _rocket.Scale = 0.7f;
             //_rocket.Position = new Vector2(100, 250);
 
-            UI ui = (UI) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
+            UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
 
 
             //Controllers
@@ -99,6 +99,17 @@ namespace DownGrade
         public void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+
+            soundEffect = null;
+            backgroundTexture = null;
+            machinegun = null;
+            laser = null;
+            weapons = null;
+
+            _msSinceLastAsteroid = 0;
+
+            CollisionHandler.Instance.UnloadContent();
+            GameObjectHandler.Instance.UnloadContent();
         }
 
         /// <summary>
@@ -108,6 +119,11 @@ namespace DownGrade
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+            }
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 gameReference.Exit();
@@ -140,36 +156,36 @@ namespace DownGrade
                 switch (side)
                 {
                     case 1:
-                    {
-                        //top
-                        v.Y = -100;
-                        v.X = amount;
-                        break;
-                    }
+                        {
+                            //top
+                            v.Y = -100;
+                            v.X = amount;
+                            break;
+                        }
                     case 2:
-                    {
-                        //bund
-                        v.Y = 1280 + 100;
-                        v.X = amount;
-                        break;
-                    }
+                        {
+                            //bund
+                            v.Y = 1280 + 100;
+                            v.X = amount;
+                            break;
+                        }
                     case 3:
-                    {
-                        //Venstre
-                        v.Y = amount;
-                        v.X = -100;
-                        break;
-                    }
+                        {
+                            //Venstre
+                            v.Y = amount;
+                            v.X = -100;
+                            break;
+                        }
                     case 4:
-                    {
-                        //Hojre
-                        v.Y = amount;
-                        v.X = 1280 + 100;
-                        break;
-                    }
+                        {
+                            //Hojre
+                            v.Y = amount;
+                            v.X = 1280 + 100;
+                            break;
+                        }
                 }
 
-                Asteroid a = (Asteroid) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
+                Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
                 a.Direction("normal");
                 _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
             }

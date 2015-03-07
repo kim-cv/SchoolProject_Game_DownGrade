@@ -65,5 +65,10 @@ namespace DownGrade
         {
             sp1.Collide(sp2);
         }
+
+        public void UnloadContent()
+        {
+            observers.Clear();
+        }
     }
 }

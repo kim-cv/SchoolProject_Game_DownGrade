@@ -41,6 +41,9 @@ namespace DownGrade
             }
             return null;
         }
-
+        public void UnloadContent()
+        {
+            ListOfGameObjects.Clear();
+        }
     }
 }

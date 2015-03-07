@@ -13,7 +13,7 @@ namespace DownGrade
     {
 
         public Shieldbar(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0.99f)
+            : base(spriteTexture, position, 0.98f)
         {
 
         }
