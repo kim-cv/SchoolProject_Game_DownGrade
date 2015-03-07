@@ -27,6 +27,7 @@ namespace DownGrade
             //meh = meh * speed;
             //Position += meh;
             GameObjectHandler.Instance.RemoveGameObject(this);
+            CollisionHandler.Instance.unregister(this);
 
             DestroyOnExit();
         }
