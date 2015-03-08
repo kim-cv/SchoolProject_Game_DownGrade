@@ -62,8 +62,7 @@ namespace DownGrade
         {
             CollisionHandler.Instance.register(this);
             Origin = new Vector2(32, 32);
-            drawResources();
-
+            
             bulletSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Laser_Shoot2);
             bulletSoundEffectInstance = bulletSoundEffect.CreateInstance();
             bulletSoundEffectInstance.Volume = 0.4f;
@@ -73,6 +72,14 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
+            if (currentShield == -1 && currentHealth == -1)
+            {
+                currentShield = maxShield;
+                currentHealth = maxHealth;
+                drawResources();
+            }
+
+
             //Run base Update
             base.Update(gameTime);
 
@@ -310,12 +317,6 @@ namespace DownGrade
 
         private void Hit(double damage)
         {
-            if (currentShield == -1 && currentHealth == -1)
-            {
-                currentShield = maxShield;
-                currentHealth = maxHealth;            
-            }
-
             if (currentHealth > 0 && currentShield > 0)
             {
                 currentShield -= damage;
@@ -349,12 +350,14 @@ namespace DownGrade
             shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(9, 662));
             shield.Scale = 1f;
 
+            Debug.Print(Convert.ToString(maxHealth) + " " + Convert.ToString(maxShield));
+
             if (currentHealth == 0)
             {
                 health.Position = new Vector2(health.PositionX - 190, health.PositionY);
             }
 
-            if (maxShield == 0)
+            if (currentShield == 0)
             {
                 shield.Position = new Vector2(shield.PositionX - 190, shield.PositionY);
             }

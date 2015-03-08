@@ -46,6 +46,7 @@
     <Compile Include="Level_Game.cs" />
     <Compile Include="LevelHandler.cs" />
     <Compile Include="Level_MainScreen.cs" />
+    <Compile Include="Mine.cs" />
     <Compile Include="Player_Explosion.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Shieldbar.cs" />
@@ -187,6 +188,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\meteorGrey_med2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Mine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Missile.png">

@@ -28,7 +28,8 @@ namespace DownGrade
             Healthbar,
             Shieldbar,
             Laser,
-            Player_Explosion
+            Player_Explosion,
+            Mine
         }
 
         private Game GameReference = null;
@@ -163,6 +164,11 @@ namespace DownGrade
                         texture = GameReference.Content.Load<Texture2D>("Ship_Explosion_96x96.png");
                         return new Player_Explosion(texture, pos);
                     }   
+                case TypeOfGameObject.Mine:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Mine.png");
+                        return new Mine(texture, pos);
+                    }
                 default:
                     {
                         return null;

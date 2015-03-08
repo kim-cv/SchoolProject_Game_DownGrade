@@ -79,11 +79,14 @@ namespace DownGrade
 
             //Make gameobjects
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
-            _rocket.maxHealth = 1;
+            _rocket.maxHealth = 10;
             _rocket.maxShield = 0;
 
             _rocket.Scale = 0.7f;
             //_rocket.Position = new Vector2(100, 250);
+
+            Mine _mine = (Mine) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Mine, new Vector2(800, 300));
+            _mine.Position = new Vector2(800, 300);
 
             UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
 
