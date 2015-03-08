@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DownGrade.Framework;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
@@ -17,10 +18,18 @@ namespace DownGrade
 
         private Vector2 direction;
 
+        private SoundEffect explosionSoundEffect;
+        private SoundEffectInstance explosionSoundEffectInstance;
+
         public Asteroid(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
+
+            //Explosion Sound
+            explosionSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Explosion);
+            explosionSoundEffectInstance = explosionSoundEffect.CreateInstance();
+            explosionSoundEffectInstance.Volume = 0.4f;
         }
 
         public void Direction(string type = "")
@@ -63,8 +72,9 @@ namespace DownGrade
                 CollisionHandler.Instance.unregister(this);
 
                 Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, Position);
-                //_asteroid.Position = Position;
                 _asteroid.Scale = Scale;
+                
+                explosionSoundEffectInstance.Play();
 
                 GameObjectHandler.Instance.RemoveGameObject(this);
 

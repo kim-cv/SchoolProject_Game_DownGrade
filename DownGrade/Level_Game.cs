@@ -60,6 +60,7 @@ namespace DownGrade
             inputController1 = new InputController(PlayerIndex.One);
 
 
+            AudioHandler.Instance.SetGameReference(gameReference);
             Spawner.Instance.SetGameReference(gameReference);
 
             // Create a new SpriteBatch, which can be used to draw textures.

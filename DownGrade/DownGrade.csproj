@@ -38,6 +38,7 @@
     <Compile Include="AnimatedRocket.cs" />
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Asteroid_Explosion.cs" />
+    <Compile Include="AudioHandler.cs" />
     <Compile Include="GameObjectHandler.cs" />
     <Compile Include="Healthbar.cs" />
     <Compile Include="Laser.cs" />
@@ -81,9 +82,6 @@
     </Content>
     <Content Include="Content\Asteroid_Explosion_64x64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\audio_greenBullet.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -168,9 +166,6 @@
     </Content>
     <Content Include="Content\laserRed16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\meh.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\meteorBrown_big1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -50,27 +50,6 @@ namespace DownGrade
             GameReference = reference;
         }
 
-
-        //public Sprite Spawn(TypeOfGameObject typeOfObject)
-        //{
-        //    //float xPosition = rnd.Next(100, 500);
-        //    //float yPosition = 0;
-
-        //    Sprite gameObject = InstanciateGameObject(typeOfObject);
-
-        //    if (gameObject != null)
-        //    {
-        //        //gameObject.Position = new Vector2(xPosition, yPosition);
-        //        GameObjectHandler.Instance.AddGameObject(gameObject);
-        //    }
-        //    else
-        //    {
-        //        //Error log?
-        //    }
-
-        //    return gameObject;
-        //}
-
         public Sprite Spawn(TypeOfGameObject typeOfObject, Vector2 pos)
         {
             Sprite gameObject = InstanciateGameObject(typeOfObject, pos);
