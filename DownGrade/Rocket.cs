@@ -348,6 +348,17 @@ namespace DownGrade
             health.Scale = 1f;
             shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(9, 662));
             shield.Scale = 1f;
+
+            if (currentHealth == 0)
+            {
+                health.Position = new Vector2(health.PositionX - 190, health.PositionY);
+            }
+
+            if (maxShield == 0)
+            {
+                shield.Position = new Vector2(shield.PositionX - 190, shield.PositionY);
+            }
+            
         }
 
         //Checks if object is at the edge of screen, and makes it stay inside!
