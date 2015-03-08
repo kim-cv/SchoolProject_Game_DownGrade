@@ -53,6 +53,10 @@ namespace DownGrade
         //Weapon
         private int weapon = 1;
 
+        //Sounds
+        private SoundEffect bulletSoundEffect;
+        private SoundEffectInstance bulletSoundEffectInstance;
+
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
@@ -60,6 +64,9 @@ namespace DownGrade
             Origin = new Vector2(32, 32);
             drawResources();
 
+            bulletSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Laser_Shoot2);
+            bulletSoundEffectInstance = bulletSoundEffect.CreateInstance();
+            bulletSoundEffectInstance.Volume = 0.4f;
 
             SourceRectangle = new Rectangle(0, 0, 64, 64);
         }
@@ -213,6 +220,8 @@ namespace DownGrade
             if (weapon == 1) { 
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
+                bulletSoundEffectInstance.Play();
+
                 Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
                 bullet.Scale = 0.5f;
                 bullet.speed = 8f;
@@ -247,17 +256,18 @@ namespace DownGrade
             {
 
                 Hit(1);
-                CollisionHandler.Instance.unregister(this);
 
                 if (currentHealth <= 0)
                 {
-                    Asteroid_Explosion _asteroid =
-                        (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, new Vector2(PositionX - 60f, PositionY - 60f));
-                    _asteroid.Scale = 2f;
+                    Player_Explosion _playerExplosion =
+                        (Player_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Player_Explosion, new Vector2(PositionX, PositionY));
+                    _playerExplosion.Scale = 0.7f;
+
+                    _playerExplosion.Rotation = Rotation;
+                    _playerExplosion.Position = Position;
                     CollisionHandler.Instance.unregister(this);
                     GameObjectHandler.Instance.RemoveGameObject(this);
                 }
-                CollisionHandler.Instance.register(this);
             }
             
         }
