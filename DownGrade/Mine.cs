@@ -51,8 +51,7 @@ namespace DownGrade
             {
                 CollisionHandler.Instance.unregister(this);
 
-                Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, Position);
-                _asteroid.Scale = 0.5f;
+                Asteroid_Explosion _asteroid = (Asteroid_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_Explosion_64, new Vector2(PositionX - 40f, PositionY - 40f));
 
                 explosionSoundEffectInstance.Play();
 
