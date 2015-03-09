@@ -29,7 +29,7 @@ namespace DownGrade
             //Explosion Sound
             explosionSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Explosion);
             explosionSoundEffectInstance = explosionSoundEffect.CreateInstance();
-            explosionSoundEffectInstance.Volume = 0.4f;
+            explosionSoundEffectInstance.Volume = 0.1f;
         }
 
         public void Direction(string type = "")

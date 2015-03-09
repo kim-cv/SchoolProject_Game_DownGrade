@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DownGrade.Framework;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
@@ -13,10 +14,19 @@ namespace DownGrade
     {
         public float speed;
 
+        //Sounds
+        private SoundEffect bulletSoundEffect;
+        private SoundEffectInstance bulletSoundEffectInstance;
+
         public Bullet(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
+            bulletSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Laser_Shoot2);
+            bulletSoundEffectInstance = bulletSoundEffect.CreateInstance();
+            bulletSoundEffectInstance.Volume = 0.1f;
+
+            bulletSoundEffectInstance.Play();
         }
 
         public override void Update(GameTime gameTime)

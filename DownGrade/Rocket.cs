@@ -54,18 +54,12 @@ namespace DownGrade
         private int weapon = 1;
 
         //Sounds
-        private SoundEffect bulletSoundEffect;
-        private SoundEffectInstance bulletSoundEffectInstance;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
             Origin = new Vector2(32, 32);
-            
-            bulletSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Laser_Shoot2);
-            bulletSoundEffectInstance = bulletSoundEffect.CreateInstance();
-            bulletSoundEffectInstance.Volume = 0.4f;
 
             SourceRectangle = new Rectangle(0, 0, 64, 64);
         }
@@ -226,8 +220,6 @@ namespace DownGrade
         {
             if (weapon == 1) { 
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
-
-                bulletSoundEffectInstance.Play();
 
                 Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
                 bullet.Scale = 0.5f;
