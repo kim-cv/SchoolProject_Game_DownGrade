@@ -49,11 +49,16 @@ namespace DownGrade
         private Shieldbar shield;
         public double maxShield;
         public double currentShield = -1;
+        private float _shieldRegainCooldown = 5000;
+        private double _msSinceLastDamage;
+        private double _msSinceLastShield;
 
         //Weapon
         private int weapon = 1;
 
         //Sounds
+
+        private GameTime gameref;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
@@ -73,9 +78,12 @@ namespace DownGrade
                 drawResources();
             }
 
+            getGametime(gameTime);
 
             //Run base Update
             base.Update(gameTime);
+
+            regainShield();
 
             //Get ship rotation
             var deltaX = Math.Sin(Rotation);
@@ -255,6 +263,7 @@ namespace DownGrade
             {
 
                 Hit(1);
+                
 
                 if (currentHealth <= 0)
                 {
@@ -333,6 +342,24 @@ namespace DownGrade
                     }
                 }
             }
+            _msSinceLastDamage = gameref.TotalGameTime.TotalMilliseconds;
+        }
+
+        private void regainShield()
+        {
+            if (currentShield != maxShield)
+            {
+                if (gameref.TotalGameTime.TotalMilliseconds > _msSinceLastShield + _shieldRegainCooldown && gameref.TotalGameTime.TotalMilliseconds > _msSinceLastDamage + _shieldRegainCooldown)
+                {
+                    shield.Position = new Vector2(shield.PositionX + (float)(190 / maxShield), shield.PositionY);
+                    if (shield.PositionX > 9f)
+                    {
+                        shield.PositionX = 9f;
+                    }
+                    _msSinceLastShield = gameref.TotalGameTime.TotalMilliseconds;
+                    currentShield += 1;
+                }
+            }
         }
 
         private void drawResources()
@@ -341,8 +368,7 @@ namespace DownGrade
             health.Scale = 1f;
             shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(9, 662));
             shield.Scale = 1f;
-
-            Debug.Print(Convert.ToString(maxHealth) + " " + Convert.ToString(maxShield));
+            shield.Layer = 1f;
 
             if (currentHealth == 0)
             {
@@ -355,6 +381,12 @@ namespace DownGrade
             }
             
         }
+
+        private void getGametime(GameTime gameTime)
+        {
+            gameref = gameTime;
+        }
+
 
         //Checks if object is at the edge of screen, and makes it stay inside!
         private void StayInsideSCreen()
