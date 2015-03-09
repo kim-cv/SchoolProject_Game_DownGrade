@@ -56,8 +56,6 @@ namespace DownGrade
         //Weapon
         private int weapon = 1;
 
-        //Sounds
-
         private GameTime gameref;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
@@ -71,6 +69,11 @@ namespace DownGrade
 
         public override void Update(GameTime gameTime)
         {
+            //Get ship rotation
+            var deltaX = Math.Sin(Rotation);
+            var deltaY = -Math.Cos(Rotation);
+            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
+
             if (currentShield == -1 && currentHealth == -1)
             {
                 currentShield = maxShield;
@@ -78,20 +81,30 @@ namespace DownGrade
                 drawResources();
             }
 
-            getGametime(gameTime);
+            //All sorts of methods controlling the player
+            Movement(moveVector);
+            Animation();
+            StayInsideSCreen();
+            ShootButton(moveVector, gameTime);
+            WeaponState();
+            regainShield();
+
+            //What is keyboard and gamepad state?
+            _keyState = Keyboard.GetState();
+            _padState = GamePad.GetState(PlayerIndex.One);
+
+            //Calculate delta time
+            delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Run base Update
             base.Update(gameTime);
 
-            regainShield();
+            getGametime(gameTime);
 
-            //Get ship rotation
-            var deltaX = Math.Sin(Rotation);
-            var deltaY = -Math.Cos(Rotation);
-            Vector2 moveVector = new Vector2((float)deltaX, (float)deltaY);
+        }
 
-
-            //If pressing 'X' or 'space' -> shoot
+        private void ShootButton(Vector2 moveVector, GameTime gameTime)
+        {
             if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (weapon == 1)
@@ -115,116 +128,9 @@ namespace DownGrade
                     }
                 }
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
-            {
-                weapon = 1;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D2) && _keyState.IsKeyUp(Keys.D2))
-            {
-                weapon = 2;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D3) && _keyState.IsKeyUp(Keys.D3))
-            {
-                weapon = 3;
-            }
-
-            //Change weapon with left/right joystick shoulder buttons
-            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
-                _padState.Buttons.RightShoulder == ButtonState.Released)
-            {
-                if (weapon == 3)
-                    weapon = 1;
-                else
-                {
-                    weapon += 1;
-                }
-            }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.LeftShoulder == ButtonState.Pressed &&
-                _padState.Buttons.LeftShoulder == ButtonState.Released)
-            {
-                if (weapon == 1)
-                    weapon = 3;
-                else
-                {
-                    weapon -= 1;
-                }
-            }
-
-            //Calculate delta time
-            delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            StayInsideSCreen();
-
-
-            //What is keyboard and gamepad state?
-            _keyState = Keyboard.GetState();
-            _padState = GamePad.GetState(PlayerIndex.One);
-
-
-            //Move & Rotate
-            if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
-            if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
-            if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.1f)
-            {
-                if (velocity < maxSpeed)
-                {
-                    velocity += acceleration * delta;
-                    _state = State.Flying;
-                }
-            }
-            else
-            {
-                _state = State.Idle;
-                if (velocity > 0)
-                {
-                    velocity -= de_acceleration * delta;
-                }
-                else if (velocity < 0)
-                {
-                    velocity = 0;
-                }
-            }
-            Position += moveVector * velocity;
-
-
-            //Which animation should play? based on state
-            if (_lastState != _state)
-            {
-                switch (_state)
-                {
-                    case State.Idle:
-                        {
-                            List<Rectangle> tempFrames = new List<Rectangle>();
-                            tempFrames.Add(new Rectangle(128, 0, 64, 64));
-                            tempFrames.Add(new Rectangle(192, 0, 64, 64));
-                            Frames = tempFrames;
-
-                            Delay = 75;
-                            Loop = true;
-                            break;
-                        }
-                    case State.Flying:
-                        {
-                            List<Rectangle> tempFrames = new List<Rectangle>();
-                            tempFrames.Add(new Rectangle(0, 0, 64, 64));
-                            tempFrames.Add(new Rectangle(64, 0, 64, 64));
-                            Frames = tempFrames;
-
-                            Delay = 75;
-                            Loop = true;
-                            break;
-                        }
-                }
-
-                _lastState = _state;
-            }
         }
 
-        void Shoot(Vector2 shipMove)
+        private void Shoot(Vector2 shipMove)
         {
             if (weapon == 1) { 
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
@@ -412,6 +318,108 @@ namespace DownGrade
             //Get GUI height -> 'height - guiHeight' = YES SIR!
             if (PositionY > 605)
                 Position = new Vector2(PositionX, 605);
+        }
+
+        private void WeaponState()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
+            {
+                weapon = 1;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D2) && _keyState.IsKeyUp(Keys.D2))
+            {
+                weapon = 2;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D3) && _keyState.IsKeyUp(Keys.D3))
+            {
+                weapon = 3;
+            }
+
+            //Change weapon with left/right joystick shoulder buttons
+            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
+                _padState.Buttons.RightShoulder == ButtonState.Released)
+            {
+                if (weapon == 3)
+                    weapon = 1;
+                else
+                {
+                    weapon += 1;
+                }
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.LeftShoulder == ButtonState.Pressed &&
+                _padState.Buttons.LeftShoulder == ButtonState.Released)
+            {
+                if (weapon == 1)
+                    weapon = 3;
+                else
+                {
+                    weapon -= 1;
+                }
+            }
+        }
+
+        private void Movement(Vector2 moveVector)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.D)) Rotation += 0.05f;
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.1f)
+            {
+                if (velocity < maxSpeed)
+                {
+                    velocity += acceleration * delta;
+                    _state = State.Flying;
+                }
+            }
+            else
+            {
+                _state = State.Idle;
+                if (velocity > 0)
+                {
+                    velocity -= de_acceleration * delta;
+                }
+                else if (velocity < 0)
+                {
+                    velocity = 0;
+                }
+            }
+            Position += moveVector * velocity;
+        }
+
+        private void Animation()
+        {
+            if (_lastState != _state)
+            {
+                switch (_state)
+                {
+                    case State.Idle:
+                        {
+                            List<Rectangle> tempFrames = new List<Rectangle>();
+                            tempFrames.Add(new Rectangle(128, 0, 64, 64));
+                            tempFrames.Add(new Rectangle(192, 0, 64, 64));
+                            Frames = tempFrames;
+
+                            Delay = 75;
+                            Loop = true;
+                            break;
+                        }
+                    case State.Flying:
+                        {
+                            List<Rectangle> tempFrames = new List<Rectangle>();
+                            tempFrames.Add(new Rectangle(0, 0, 64, 64));
+                            tempFrames.Add(new Rectangle(64, 0, 64, 64));
+                            Frames = tempFrames;
+
+                            Delay = 75;
+                            Loop = true;
+                            break;
+                        }
+                }
+
+                _lastState = _state;
+            }
         }
     }
 }
