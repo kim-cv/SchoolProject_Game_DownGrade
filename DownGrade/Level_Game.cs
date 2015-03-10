@@ -31,6 +31,9 @@ namespace DownGrade
         private float _asteroidDelay = 1000;
         private Random rnd = new Random();
 
+        private SoundEffect gameSoundEffect;
+        private SoundEffectInstance gameSoundEffectInstance;
+
         public Level_Game(Game gameRef)
             : base()
         {
@@ -62,6 +65,12 @@ namespace DownGrade
 
             AudioHandler.Instance.SetGameReference(gameReference);
             Spawner.Instance.SetGameReference(gameReference);
+
+            gameSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Game_Music);
+            gameSoundEffectInstance = gameSoundEffect.CreateInstance();
+            gameSoundEffectInstance.Volume = 0.2f;
+            gameSoundEffectInstance.IsLooped = true;
+            gameSoundEffectInstance.Play();
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(gameReference.GraphicsDevice);
@@ -114,6 +123,8 @@ namespace DownGrade
 
             CollisionHandler.Instance.UnloadContent();
             GameObjectHandler.Instance.UnloadContent();
+
+            gameSoundEffectInstance.Dispose();
         }
 
         /// <summary>

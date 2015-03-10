@@ -274,7 +274,6 @@ namespace DownGrade
             health.Scale = 1f;
             shield = (Shieldbar)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Shieldbar, new Vector2(9, 662));
             shield.Scale = 1f;
-            shield.Layer = 1f;
 
             if (currentHealth == 0)
             {

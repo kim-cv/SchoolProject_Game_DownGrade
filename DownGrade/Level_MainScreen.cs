@@ -32,6 +32,9 @@ namespace DownGrade
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
+        private SoundEffect titleSoundEffect;
+        private SoundEffectInstance titleSoundEffectInstance;
+
         public Level_MainScreen(Game gameRef)
             : base()
         {
@@ -59,7 +62,15 @@ namespace DownGrade
         {
             inputController1 = new InputController(PlayerIndex.One);
 
+            AudioHandler.Instance.SetGameReference(gameReference);
             Spawner.Instance.SetGameReference(gameReference);
+
+
+            titleSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Title_Music);
+            titleSoundEffectInstance = titleSoundEffect.CreateInstance();
+            titleSoundEffectInstance.Volume = 0.2f;
+            titleSoundEffectInstance.IsLooped = true;
+            titleSoundEffectInstance.Play();
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(gameReference.GraphicsDevice);
@@ -86,6 +97,8 @@ namespace DownGrade
             isStartSelected = true;
             isSettingsSelected = false;
             isExitSelected = false;
+
+            titleSoundEffectInstance.Dispose();
         }
 
         /// <summary>

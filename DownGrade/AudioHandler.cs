@@ -13,7 +13,9 @@ namespace DownGrade
         {
             Explosion,
             Laser_Shoot2,
-            Laser_Shoot4
+            Laser_Shoot4,
+            Game_Music,
+            Title_Music
         }
 
         private Game GameReference = null;
@@ -47,6 +49,14 @@ namespace DownGrade
                 case TypeOfSound.Laser_Shoot4:
                     {
                         return GameReference.Content.Load<SoundEffect>("Laser_Shoot4");
+                    }
+                case TypeOfSound.Game_Music:
+                    {
+                        return GameReference.Content.Load<SoundEffect>("Game_Music");
+                    }
+                case TypeOfSound.Title_Music:
+                    {
+                        return GameReference.Content.Load<SoundEffect>("Title_Music");
                     }
                 default:
                     {
