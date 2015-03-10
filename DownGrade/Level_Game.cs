@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,6 +16,9 @@ namespace DownGrade
     {
         private Game gameReference;
 
+        private KeyboardState _keyState;
+        private GamePadState _padState;
+
         private SoundEffect soundEffect;
 
         private InputController inputController1;
@@ -23,18 +27,18 @@ namespace DownGrade
         private Texture2D machinegun;
         private Texture2D laser;
         private Texture2D weapons;
+        private Texture2D Pause;
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-
-        //private double _msSinceLastAsteroid;
-        //private float _asteroidDelay = 1000;
-        //private Random rnd = new Random();
 
         private SoundEffect gameSoundEffect;
         private SoundEffectInstance gameSoundEffectInstance;
 
         private WaveGenerator wg = new WaveGenerator();
+
+        private bool paused = false;
+        private bool pauseKeyDown = false;
 
         public Level_Game(Game gameRef)
             : base()
@@ -86,6 +90,7 @@ namespace DownGrade
             machinegun = gameReference.Content.Load<Texture2D>("UI_Machinegun_Marked.png");
             laser = gameReference.Content.Load<Texture2D>("UI_Laser.png");
             weapons = gameReference.Content.Load<Texture2D>("GUI_Weapons.png");
+            Pause = gameReference.Content.Load<Texture2D>("Pause.png");
 
 
             //Make gameobjects
@@ -133,83 +138,53 @@ namespace DownGrade
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            if (!paused)
             {
-                LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+                //if (Keyboard.GetState().IsKeyDown(Keys.K))
+                //{
+                //    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+                //}
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                    Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+
+                // TODO: Add your update logic here
+
+                List<Sprite> tempSprites = new List<Sprite>();
+
+                foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
+                {
+                    tempSprites.Add(sprite);
+                }
+
+                foreach (Sprite sprite in tempSprites)
+                {
+                    sprite.Update(gameTime);
+                }
+
+                wg.Update(gameTime);
+
+                CollisionHandler.Instance.Update(gameTime);
+                inputController1.Update(gameTime);
+                //inputController2.Update(gameTime);
+                //base.Update(gameTime);
             }
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-                gameReference.Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.P) && _keyState.IsKeyUp(Keys.P))
+            {    
+                if (!pauseKeyDown)
+                {
+                    if (!paused)
+                        BeginPause();
 
-            // TODO: Add your update logic here
-
-            List<Sprite> tempSprites = new List<Sprite>();
-
-            foreach (Sprite sprite in GameObjectHandler.Instance.GetListOfGameObjects())
-            {
-                tempSprites.Add(sprite);
+                    else
+                        EndPause();
+                }
             }
 
-            foreach (Sprite sprite in tempSprites)
-            {
-                sprite.Update(gameTime);
-            }
+            //checkPauseKey();
 
-
-            //Random asteroids 1 every second
-            //if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
-            //{
-            //    //MediaPlayer.Volume = 1.0f;
-            //    //MediaPlayer.Play(soundEffect);
-            //    //soundEffect.Play();
-
-            //    int side = rnd.Next(1, 4);
-            //    int amount = rnd.Next(1280);
-            //    Vector2 v = new Vector2();
-            //    switch (side)
-            //    {
-            //        case 1:
-            //            {
-            //                //top
-            //                v.Y = -100;
-            //                v.X = amount;
-            //                break;
-            //            }
-            //        case 2:
-            //            {
-            //                //bund
-            //                v.Y = 1280 + 100;
-            //                v.X = amount;
-            //                break;
-            //            }
-            //        case 3:
-            //            {
-            //                //Venstre
-            //                v.Y = amount;
-            //                v.X = -100;
-            //                break;
-            //            }
-            //        case 4:
-            //            {
-            //                //Hojre
-            //                v.Y = amount;
-            //                v.X = 1280 + 100;
-            //                break;
-            //            }
-            //    }
-
-            //    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
-            //    a.Direction("normal");
-            //    _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
-            //}
-
-            wg.Update(gameTime);
-
-            CollisionHandler.Instance.Update(gameTime);
-            inputController1.Update(gameTime);
-            //inputController2.Update(gameTime);
-            //base.Update(gameTime);
         }
 
         /// <summary>
@@ -237,9 +212,34 @@ namespace DownGrade
             spriteBatch.Draw(laser, new Vector2(450, 675), null, Color.White, 0f, new Vector2(0, 0), 1f,
                 SpriteEffects.None, 1f);
 
+            if (paused)
+            {
+                spriteBatch.Draw(Pause, new Vector2((1280/2) - (Pause.Width/2), 310), null, Color.White, 0f,
+                    new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+                Debug.Print("Paused");
+            }
+            else
+            {
+                Debug.Print("Not Paused");
+                //Pause.Dispose();
+            }
             spriteBatch.End();
 
             //base.Draw(gameTime);
+        }
+
+
+        private void BeginPause()
+        {
+            paused = true;
+            gameSoundEffectInstance.Pause();
+            
+        }
+
+        private void EndPause()
+        {
+            gameSoundEffectInstance.Resume();
+            paused = false;
         }
     }
 }

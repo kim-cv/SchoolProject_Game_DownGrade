@@ -85,6 +85,7 @@ namespace DownGrade
             Settings_Marked = gameReference.Content.Load<Texture2D>("Settings - Marked.png");
             Start = gameReference.Content.Load<Texture2D>("Startgame.png");
             Start_Marked = gameReference.Content.Load<Texture2D>("Startgame - Marked.png");
+
         }
 
         /// <summary>
@@ -108,9 +109,9 @@ namespace DownGrade
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-                gameReference.Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+            //    Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    gameReference.Exit();
 
 
             // TODO: Add your update logic here
@@ -157,7 +158,7 @@ namespace DownGrade
                 }                
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _keyState.IsKeyUp(Keys.Enter))
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _keyState.IsKeyUp(Keys.Enter) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
             {
                 if (isStartSelected)
                 {
@@ -169,7 +170,7 @@ namespace DownGrade
                 }
                 else if (isExitSelected)
                 {
-                    
+                    gameReference.Exit();
                 }                
             }
 
