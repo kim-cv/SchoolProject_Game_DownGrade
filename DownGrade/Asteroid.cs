@@ -25,7 +25,6 @@ namespace DownGrade
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
-
             //Explosion Sound
             explosionSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.Explosion);
             explosionSoundEffectInstance = explosionSoundEffect.CreateInstance();

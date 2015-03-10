@@ -54,7 +54,11 @@ namespace DownGrade
         private double _msSinceLastShield;
 
         //Weapon
-        private int weapon = 1;
+        private string weapon = "Gun";
+        private Queue<string> weaponList = new Queue<string>();
+
+        // Abilities
+        private List<string> abilitiesList = new List<string>();
 
         private GameTime gameref;
 
@@ -65,10 +69,17 @@ namespace DownGrade
             Origin = new Vector2(32, 32);
 
             SourceRectangle = new Rectangle(0, 0, 64, 64);
+
+            weaponList.Enqueue("Gun");
+            weaponList.Enqueue("Laser");
+            weaponList.Enqueue("MachineGun");
+            abilitiesList.Add("Shield");
+            abilitiesList.Add("ShieldRegain");
         }
 
         public override void Update(GameTime gameTime)
         {
+            getGametime(gameTime);
             //Get ship rotation
             var deltaX = Math.Sin(Rotation);
             var deltaY = -Math.Cos(Rotation);
@@ -88,6 +99,7 @@ namespace DownGrade
             ShootButton(moveVector, gameTime);
             WeaponState();
             regainShield();
+            shieldAbility();
 
             //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
@@ -96,10 +108,13 @@ namespace DownGrade
             //Calculate delta time
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //Experience
+            
+
             //Run base Update
             base.Update(gameTime);
 
-            getGametime(gameTime);
+            
 
         }
 
@@ -107,7 +122,7 @@ namespace DownGrade
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                if (weapon == 1)
+                if (weapon == "Gun")
                 {
                     if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
                     {
@@ -115,11 +130,11 @@ namespace DownGrade
                     }
                 }
 
-                if (weapon == 2)
+                if (weapon == "Laser")
                 {
                     Shoot(moveVector);
                 }
-                if (weapon == 3)
+                if (weapon == "MachineGun")
                 {
                     if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
                     {
@@ -132,7 +147,8 @@ namespace DownGrade
 
         private void Shoot(Vector2 shipMove)
         {
-            if (weapon == 1) { 
+            if (weapon == "Gun")
+            { 
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
                 Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
@@ -141,7 +157,7 @@ namespace DownGrade
                 //bullet.Position = Position + meh * fireOffset;
                 bullet.Rotation = Rotation;
             }
-            else if (weapon == 2)
+            else if (weapon == "Laser")
             {
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
@@ -151,7 +167,7 @@ namespace DownGrade
                 //bullet.Position = Position + meh * fireOffset;
                 laser.Rotation = Rotation;
             }
-            else if (weapon == 3)
+            else if (weapon == "MachineGun")
             {
                 Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
 
@@ -253,18 +269,31 @@ namespace DownGrade
 
         private void regainShield()
         {
-            if (currentShield != maxShield)
-            {
-                if (gameref.TotalGameTime.TotalMilliseconds > _msSinceLastShield + _shieldRegainCooldown && gameref.TotalGameTime.TotalMilliseconds > _msSinceLastDamage + _shieldRegainCooldown)
+            if(abilitiesList.Contains("ShieldRegain")){
+                if (currentShield != maxShield)
                 {
-                    shield.Position = new Vector2(shield.PositionX + (float)(190 / maxShield), shield.PositionY);
-                    if (shield.PositionX > 9f)
+                    if (gameref.TotalGameTime.TotalMilliseconds > _msSinceLastShield + _shieldRegainCooldown && gameref.TotalGameTime.TotalMilliseconds > _msSinceLastDamage + _shieldRegainCooldown)
                     {
-                        shield.PositionX = 9f;
+                        shield.Position = new Vector2(shield.PositionX + (float)(190 / maxShield), shield.PositionY);
+                        if (shield.PositionX > 9f)
+                        {
+                            shield.PositionX = 9f;
+                        }
+                        _msSinceLastShield = gameref.TotalGameTime.TotalMilliseconds;
+                        currentShield += 1;
                     }
-                    _msSinceLastShield = gameref.TotalGameTime.TotalMilliseconds;
-                    currentShield += 1;
                 }
+            }
+        }
+
+        private void shieldAbility()
+        {
+            if (!abilitiesList.Contains("Shield"))
+            {
+                currentShield = 0;
+                maxShield = 0;
+                shield.PositionX = -190f;
+                abilitiesList.Remove("ShieldRegain");
             }
         }
 
@@ -321,41 +350,39 @@ namespace DownGrade
 
         private void WeaponState()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.D1) && _keyState.IsKeyUp(Keys.D1))
-            {
-                weapon = 1;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D2) && _keyState.IsKeyUp(Keys.D2))
-            {
-                weapon = 2;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D3) && _keyState.IsKeyUp(Keys.D3))
-            {
-                weapon = 3;
-            }
-
             //Change weapon with left/right joystick shoulder buttons
             if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
-                _padState.Buttons.RightShoulder == ButtonState.Released)
+                _padState.Buttons.RightShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.Tab) && _keyState.IsKeyUp(Keys.Tab))
             {
-                if (weapon == 3)
-                    weapon = 1;
-                else
-                {
-                    weapon += 1;
-                }
+                string nextweapon = weaponList.Dequeue();
+
+                weapon = nextweapon;
+
+                weaponList.Enqueue(nextweapon);
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.LeftShoulder == ButtonState.Pressed &&
-                _padState.Buttons.LeftShoulder == ButtonState.Released)
+                _padState.Buttons.LeftShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _keyState.IsKeyUp(Keys.LeftShift))
             {
-                if (weapon == 1)
-                    weapon = 3;
-                else
+                string previousweapon = weaponList.Last();
+
+                weapon = previousweapon;
+
+                List<string> tempweapons = new List<string>();
+
+                foreach (var w in weaponList)
                 {
-                    weapon -= 1;
+                    if(w != previousweapon){
+                        tempweapons.Add(w);
+                        Debug.Print(w);
+                    }
+                }
+
+                weaponList.Enqueue(previousweapon);
+
+                foreach (var t in tempweapons)
+                {
+                    weaponList.Enqueue(t);
                 }
             }
         }
