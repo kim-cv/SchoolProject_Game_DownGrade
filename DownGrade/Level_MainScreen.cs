@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -81,8 +82,8 @@ namespace DownGrade
             backgroundTexture = gameReference.Content.Load<Texture2D>("TitleScreen.png");
             Exit = gameReference.Content.Load<Texture2D>("Exit.png");
             Exit_Marked = gameReference.Content.Load<Texture2D>("Exit - Marked.png");
-            Settings = gameReference.Content.Load<Texture2D>("Settings.png");
-            Settings_Marked = gameReference.Content.Load<Texture2D>("Settings - Marked.png");
+            Settings = gameReference.Content.Load<Texture2D>("Instructions - Not Marked.png");
+            Settings_Marked = gameReference.Content.Load<Texture2D>("Instructions - Marked.png");
             Start = gameReference.Content.Load<Texture2D>("Startgame.png");
             Start_Marked = gameReference.Content.Load<Texture2D>("Startgame - Marked.png");
 
@@ -166,7 +167,7 @@ namespace DownGrade
                 }
                 else if (isSettingsSelected)
                 {
-                    
+                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.Instructions);
                 }
                 else if (isExitSelected)
                 {
