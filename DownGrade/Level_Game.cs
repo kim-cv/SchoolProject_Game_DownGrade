@@ -39,6 +39,8 @@ namespace DownGrade
 
         private bool paused = false;
         private bool pauseKeyDown = false;
+        KeyboardState currentKeyState, previousKeyState;
+        GamePadState currentPadState, previousPadState;
 
         public Level_Game(Game gameRef)
             : base()
@@ -138,6 +140,9 @@ namespace DownGrade
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                    Keyboard.GetState().IsKeyDown(Keys.Escape))
+                LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
             if (!paused)
             {
                 //if (Keyboard.GetState().IsKeyDown(Keys.K))
@@ -145,9 +150,7 @@ namespace DownGrade
                 //    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
                 //}
 
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                    Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+                
 
                 // TODO: Add your update logic here
 
@@ -171,19 +174,25 @@ namespace DownGrade
                 //base.Update(gameTime);
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.P) && _keyState.IsKeyUp(Keys.P))
-            {    
-                if (!pauseKeyDown)
-                {
-                    if (!paused)
-                        BeginPause();
+            previousKeyState = currentKeyState;
+            currentKeyState = Keyboard.GetState();
+            previousPadState = currentPadState;
+            currentPadState = GamePad.GetState(PlayerIndex.One);
 
-                    else
-                        EndPause();
+            if (currentKeyState.IsKeyUp(Keys.P) && previousKeyState.IsKeyDown(Keys.P) || currentPadState.IsButtonUp(Buttons.Start) && previousPadState.IsButtonDown(Buttons.Start))
+            {
+                if (!paused)
+                {
+                    paused = true;
+                    gameSoundEffectInstance.Pause();
+                }
+                else
+                {
+                    paused = false;
+                    gameSoundEffectInstance.Resume();
                 }
             }
 
-            //checkPauseKey();
 
         }
 
@@ -216,30 +225,12 @@ namespace DownGrade
             {
                 spriteBatch.Draw(Pause, new Vector2((1280/2) - (Pause.Width/2), 310), null, Color.White, 0f,
                     new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
-                Debug.Print("Paused");
             }
-            else
-            {
-                Debug.Print("Not Paused");
-                //Pause.Dispose();
-            }
+
             spriteBatch.End();
 
             //base.Draw(gameTime);
         }
 
-
-        private void BeginPause()
-        {
-            paused = true;
-            gameSoundEffectInstance.Pause();
-            
-        }
-
-        private void EndPause()
-        {
-            gameSoundEffectInstance.Resume();
-            paused = false;
-        }
     }
 }
