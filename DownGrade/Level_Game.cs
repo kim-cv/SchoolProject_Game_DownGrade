@@ -27,12 +27,14 @@ namespace DownGrade
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private double _msSinceLastAsteroid;
-        private float _asteroidDelay = 1000;
-        private Random rnd = new Random();
+        //private double _msSinceLastAsteroid;
+        //private float _asteroidDelay = 1000;
+        //private Random rnd = new Random();
 
         private SoundEffect gameSoundEffect;
         private SoundEffectInstance gameSoundEffectInstance;
+
+        private WaveGenerator wg = new WaveGenerator();
 
         public Level_Game(Game gameRef)
             : base()
@@ -94,9 +96,6 @@ namespace DownGrade
             _rocket.Scale = 0.7f;
             //_rocket.Position = new Vector2(100, 250);
 
-            Mine _mine = (Mine) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Mine, new Vector2(800, 300));
-            _mine.Position = new Vector2(800, 300);
-
             UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
 
 
@@ -119,7 +118,7 @@ namespace DownGrade
             laser = null;
             weapons = null;
 
-            _msSinceLastAsteroid = 0;
+            //_msSinceLastAsteroid = 0;
 
             CollisionHandler.Instance.UnloadContent();
             GameObjectHandler.Instance.UnloadContent();
@@ -159,52 +158,53 @@ namespace DownGrade
 
 
             //Random asteroids 1 every second
-            if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
-            {
-                //MediaPlayer.Volume = 1.0f;
-                //MediaPlayer.Play(soundEffect);
-                //soundEffect.Play();
+            //if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastAsteroid + _asteroidDelay)
+            //{
+            //    //MediaPlayer.Volume = 1.0f;
+            //    //MediaPlayer.Play(soundEffect);
+            //    //soundEffect.Play();
 
-                int side = rnd.Next(1, 4);
-                int amount = rnd.Next(1280);
-                Vector2 v = new Vector2();
-                switch (side)
-                {
-                    case 1:
-                        {
-                            //top
-                            v.Y = -100;
-                            v.X = amount;
-                            break;
-                        }
-                    case 2:
-                        {
-                            //bund
-                            v.Y = 1280 + 100;
-                            v.X = amount;
-                            break;
-                        }
-                    case 3:
-                        {
-                            //Venstre
-                            v.Y = amount;
-                            v.X = -100;
-                            break;
-                        }
-                    case 4:
-                        {
-                            //Hojre
-                            v.Y = amount;
-                            v.X = 1280 + 100;
-                            break;
-                        }
-                }
+            //    int side = rnd.Next(1, 4);
+            //    int amount = rnd.Next(1280);
+            //    Vector2 v = new Vector2();
+            //    switch (side)
+            //    {
+            //        case 1:
+            //            {
+            //                //top
+            //                v.Y = -100;
+            //                v.X = amount;
+            //                break;
+            //            }
+            //        case 2:
+            //            {
+            //                //bund
+            //                v.Y = 1280 + 100;
+            //                v.X = amount;
+            //                break;
+            //            }
+            //        case 3:
+            //            {
+            //                //Venstre
+            //                v.Y = amount;
+            //                v.X = -100;
+            //                break;
+            //            }
+            //        case 4:
+            //            {
+            //                //Hojre
+            //                v.Y = amount;
+            //                v.X = 1280 + 100;
+            //                break;
+            //            }
+            //    }
 
-                Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
-                a.Direction("normal");
-                _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
-            }
+            //    Asteroid a = (Asteroid)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AsteroidBig_64, v);
+            //    a.Direction("normal");
+            //    _msSinceLastAsteroid = gameTime.TotalGameTime.TotalMilliseconds;
+            //}
 
+            wg.Update(gameTime);
 
             CollisionHandler.Instance.Update(gameTime);
             inputController1.Update(gameTime);

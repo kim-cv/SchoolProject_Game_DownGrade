@@ -70,6 +70,7 @@
     <Compile Include="Rocket.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="UI.cs" />
+    <Compile Include="WaveGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

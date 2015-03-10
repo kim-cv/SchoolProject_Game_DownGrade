@@ -46,8 +46,7 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            //base.Collide(s);
-            if (s.GetType() != typeof(Asteroid))
+            if(s.GetType() != typeof(Mine))
             {
                 CollisionHandler.Instance.unregister(this);
 
@@ -56,7 +55,6 @@ namespace DownGrade
                 explosionSoundEffectInstance.Play();
 
                 GameObjectHandler.Instance.RemoveGameObject(this);
-
             }
         }
     }
