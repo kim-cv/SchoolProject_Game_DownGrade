@@ -78,6 +78,22 @@ namespace DownGrade
                 GameObjectHandler.Instance.RemoveGameObject(this);
 
 
+                if (s.GetType() != typeof (Mine) || s.GetType() != typeof (Asteroid))
+                {
+                    int experience = GameObjectHandler.Instance.FindGameObjectProperty("DownGrade.Rocket");
+                    Debug.Print("Hit! Experience = " + experience);
+                    if (s.GetType() == typeof (Bullet))
+                    {
+                        GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 5);
+                    }
+                }
+
+
+
+
+
+
+
                 if (brokenState > 1 && s.GetType() != typeof(Rocket))
                 {
                     for (int i = 0; i < brokenState; i++)

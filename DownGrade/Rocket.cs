@@ -15,6 +15,8 @@ namespace DownGrade
 {
     class Rocket : AnimatedSprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
     {
+        public int Experience { get; set; }
+
         public string tag = "Rocket";
 
         //Animation State
@@ -25,6 +27,7 @@ namespace DownGrade
             Flying,
             Idle
         }
+
 
         private KeyboardState _keyState;
         private GamePadState _padState;
@@ -60,6 +63,10 @@ namespace DownGrade
         // Abilities
         private List<string> abilitiesList = new List<string>();
 
+        //Experience
+        private int level = 5;
+        private int maxExperience = 50;
+
         private GameTime gameref;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
@@ -67,6 +74,8 @@ namespace DownGrade
         {
             CollisionHandler.Instance.register(this);
             Origin = new Vector2(32, 32);
+
+            Experience = maxExperience;
 
             SourceRectangle = new Rectangle(0, 0, 64, 64);
 
@@ -96,6 +105,7 @@ namespace DownGrade
             Movement(moveVector);
             Animation();
             StayInsideSCreen();
+            ExperienceCalculator();
             ShootButton(moveVector, gameTime);
             WeaponState();
             regainShield();
@@ -374,7 +384,6 @@ namespace DownGrade
                 {
                     if(w != previousweapon){
                         tempweapons.Add(w);
-                        Debug.Print(w);
                     }
                 }
 
@@ -446,6 +455,64 @@ namespace DownGrade
 
                 _lastState = _state;
             }
+        }
+
+
+        public void ExperienceCalculator()
+        {
+            if (Experience < 1 && level > 1)
+            {
+                level -= 1;
+                
+                if (weaponList.Count > 1)
+                {
+                    if (abilitiesList.Count > 0)
+                    {
+                        Random rnd = new Random();
+
+                        if (rnd.Next(1, 2) == 1)
+                        {
+
+                            if (weaponList.Peek() == "Gun")
+                            {
+                                weaponList.Dequeue();
+                                weaponList.Dequeue();
+                                weaponList.Enqueue("Gun");
+                            }
+                            else
+                            {
+                                weaponList.Dequeue();
+                            }
+                        }
+                        else
+                        {
+                            if (abilitiesList.Count > 0)
+                            {
+                                abilitiesList.RemoveAt(rnd.Next(1, abilitiesList.Count));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (weaponList.Peek() == "Gun")
+                        {
+                            weaponList.Dequeue();
+                            weaponList.Dequeue();
+                            weaponList.Enqueue("Gun");
+                        }
+                        else
+                        {
+                            weaponList.Dequeue();
+                        }
+                    }
+                }
+                
+
+                maxExperience *= 2;
+                Experience = maxExperience;
+            }
+
+            
         }
     }
 }
