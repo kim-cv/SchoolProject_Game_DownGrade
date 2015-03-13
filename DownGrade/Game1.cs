@@ -53,6 +53,7 @@ namespace DownGrade
             LevelHandler.Instance.ListOfLevels.Add(new Level_MainScreen(this));
             LevelHandler.Instance.ListOfLevels.Add(new Level_Game(this));
             LevelHandler.Instance.ListOfLevels.Add(new Level_Instructions(this));
+            LevelHandler.Instance.ListOfLevels.Add(new Level_GameOver(this));
 
             level = LevelHandler.Instance.ListOfLevels[0];
         }

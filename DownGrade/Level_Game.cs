@@ -97,7 +97,7 @@ namespace DownGrade
 
             //Make gameobjects
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
-            _rocket.maxHealth = 10;
+            _rocket.maxHealth = 5;
             _rocket.maxShield = 5;
 
             _rocket.Scale = 0.7f;
@@ -142,6 +142,9 @@ namespace DownGrade
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                     Keyboard.GetState().IsKeyDown(Keys.Escape))
                 LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
+
+            
+
             if (!paused)
             {
                 //if (Keyboard.GetState().IsKeyDown(Keys.K))
