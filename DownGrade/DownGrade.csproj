@@ -48,6 +48,7 @@
     <Compile Include="Level_Instructions.cs" />
     <Compile Include="Level_MainScreen.cs" />
     <Compile Include="Mine.cs" />
+    <Compile Include="Missile.cs" />
     <Compile Include="Player_Explosion.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Shieldbar.cs" />

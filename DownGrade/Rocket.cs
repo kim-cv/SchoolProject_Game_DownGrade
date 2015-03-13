@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DownGrade
 {
-    class Rocket : AnimatedSprite, IInputGamePadLeftStick, IInputGamePadAnalogTriggers
+    class Rocket : AnimatedSprite, IInputGamePadLeftStick
     {
         public int Experience { get; set; }
 
@@ -99,6 +99,19 @@ namespace DownGrade
                 currentShield = maxShield;
                 currentHealth = maxHealth;
                 drawResources();
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Y == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                if (_padState.Buttons.Y == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
+                {
+                    Vector2 meh = new Vector2((float) Math.Cos(Rotation - MathHelper.PiOver2), (float) Math.Sin(Rotation - MathHelper.PiOver2))*10f + moveVector;
+
+                    Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh*machinegunFireOffset));
+                    missile.Scale = 2f;
+                    missile.Rotation = Rotation;
+                }
             }
 
             //All sorts of methods controlling the player
@@ -191,7 +204,7 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            if (s.GetType() != typeof(Rocket) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Laser))
+            if (s.GetType() != typeof(Rocket) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Missile))
             {
 
                 Hit(1);
@@ -221,30 +234,6 @@ namespace DownGrade
             if (moveVector.X < 0)
             {
                 Rotation -= 0.05f;
-            }
-        }
-
-
-        public void LeftTriggerPressed(float pressure)
-        {
-
-        }
-
-        public void RightTriggerPressed(float pressure)
-        {
-            if (pressure > 0.1f)
-            {
-                var deltaX = Math.Sin(Rotation);
-                var deltaY = -Math.Cos(Rotation);
-                Vector2 newVector = new Vector2((float)deltaX, (float)deltaY);
-                newVector = newVector * pressure;
-                Position += newVector;
-
-                _state = State.Flying;
-            }
-            else
-            {
-                _state = State.Idle;
             }
         }
 

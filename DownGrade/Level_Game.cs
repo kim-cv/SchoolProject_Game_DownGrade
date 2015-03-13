@@ -108,7 +108,6 @@ namespace DownGrade
 
             //Controllers
             inputController1.InputGamePadLeftStickListeners.Add(_rocket);
-            inputController1.InputGamePadAnalogTriggerListeners.Add(_rocket);
         }
 
         /// <summary>

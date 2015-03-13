@@ -29,7 +29,8 @@ namespace DownGrade
             Shieldbar,
             Laser,
             Player_Explosion,
-            Mine
+            Mine,
+            Missile
         }
 
         private Game GameReference = null;
@@ -168,6 +169,11 @@ namespace DownGrade
                     {
                         texture = GameReference.Content.Load<Texture2D>("Mine.png");
                         return new Mine(texture, pos);
+                    }
+                case TypeOfGameObject.Missile:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Missile.png");
+                        return new Missile(texture, pos);
                     }
                 default:
                     {

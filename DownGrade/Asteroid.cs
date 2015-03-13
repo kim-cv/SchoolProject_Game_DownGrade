@@ -61,6 +61,19 @@ namespace DownGrade
 
             //Fly asteroid FLY!
             Position += direction * speed * deltaTime;
+
+            DestroyOnExit();
+        }
+
+        private void DestroyOnExit()
+        {
+            var temp = 1280;
+
+            if (PositionX < -100 || PositionY < -100 || PositionX > temp + 100 || PositionY > temp + 100)
+            {
+                GameObjectHandler.Instance.RemoveGameObject(this);
+                CollisionHandler.Instance.unregister(this);
+            }
         }
 
         public override void Collide(Sprite s)
