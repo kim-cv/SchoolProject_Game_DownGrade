@@ -109,7 +109,7 @@ namespace DownGrade
                     Vector2 meh = new Vector2((float) Math.Cos(Rotation - MathHelper.PiOver2), (float) Math.Sin(Rotation - MathHelper.PiOver2))*10f + moveVector;
 
                     Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh*machinegunFireOffset));
-                    missile.Scale = 2f;
+                    missile.Scale = 1.5f;
                     missile.Rotation = Rotation;
                 }
             }
