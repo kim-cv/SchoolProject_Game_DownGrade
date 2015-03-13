@@ -15,7 +15,8 @@ namespace DownGrade
             Laser_Shoot2,
             Laser_Shoot4,
             Game_Music,
-            Title_Music
+            Title_Music,
+            GameOver_Music
         }
 
         private Game GameReference = null;
@@ -57,6 +58,10 @@ namespace DownGrade
                 case TypeOfSound.Title_Music:
                     {
                         return GameReference.Content.Load<SoundEffect>("Title_Music");
+                    }
+                case TypeOfSound.GameOver_Music:
+                    {
+                        return GameReference.Content.Load<SoundEffect>("GameOver_Music");
                     }
                 default:
                     {

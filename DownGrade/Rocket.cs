@@ -195,7 +195,6 @@ namespace DownGrade
             {
 
                 Hit(1);
-                
 
                 if (currentHealth <= 0)
                 {
@@ -205,6 +204,8 @@ namespace DownGrade
 
                     _playerExplosion.Rotation = Rotation;
                     _playerExplosion.Position = Position;
+
+                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.GameOver);
                     CollisionHandler.Instance.unregister(this);
                     GameObjectHandler.Instance.RemoveGameObject(this);
                 }

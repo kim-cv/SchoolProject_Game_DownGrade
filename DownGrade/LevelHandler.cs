@@ -17,7 +17,8 @@ namespace DownGrade
         {
             MainScreen,
             Game,
-            Instructions
+            Instructions,
+            GameOver
         }
 
 
