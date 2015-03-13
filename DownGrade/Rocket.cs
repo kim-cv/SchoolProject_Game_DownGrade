@@ -80,7 +80,7 @@ namespace DownGrade
             SourceRectangle = new Rectangle(0, 0, 64, 64);
 
             weaponList.Enqueue("Gun");
-            weaponList.Enqueue("Laser");
+            weaponList.Enqueue("Missile");
             weaponList.Enqueue("MachineGun");
             abilitiesList.Add("Shield");
             abilitiesList.Add("ShieldRegain");
@@ -99,19 +99,6 @@ namespace DownGrade
                 currentShield = maxShield;
                 currentHealth = maxHealth;
                 drawResources();
-            }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Y == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                if (_padState.Buttons.Y == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
-                {
-                    Vector2 meh = new Vector2((float) Math.Cos(Rotation - MathHelper.PiOver2), (float) Math.Sin(Rotation - MathHelper.PiOver2))*10f + moveVector;
-
-                    Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh*machinegunFireOffset));
-                    missile.Scale = 1.5f;
-                    missile.Rotation = Rotation;
-                }
             }
 
             //All sorts of methods controlling the player
@@ -153,9 +140,12 @@ namespace DownGrade
                     }
                 }
 
-                if (weapon == "Laser")
+                if (weapon == "Missile")
                 {
-                    Shoot(moveVector);
+                    if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
+                    {
+                        Shoot(moveVector);
+                    }
                 }
                 if (weapon == "MachineGun")
                 {
@@ -180,15 +170,13 @@ namespace DownGrade
                 //bullet.Position = Position + meh * fireOffset;
                 bullet.Rotation = Rotation;
             }
-            else if (weapon == "Laser")
+            else if (weapon == "Missile")
             {
-                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
+                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 10f + shipMove;
 
-                Laser laser = (Laser)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Laser, (Position + meh * laserFireOffset));
-                
-                //laser.speed = 8f;
-                //bullet.Position = Position + meh * fireOffset;
-                laser.Rotation = Rotation;
+                Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh * machinegunFireOffset));
+                missile.Scale = 1.5f;
+                missile.Rotation = Rotation;
             }
             else if (weapon == "MachineGun")
             {

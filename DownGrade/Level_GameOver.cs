@@ -92,7 +92,7 @@ namespace DownGrade
         public void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
-                    Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    Keyboard.GetState().IsKeyDown(Keys.Escape))
                 LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.MainScreen);
 
             _keyState = Keyboard.GetState();
