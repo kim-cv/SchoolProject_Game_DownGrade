@@ -94,8 +94,8 @@ namespace DownGrade
 
             //Make gameobjects
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
-            _rocket.maxHealth = 5;
-            _rocket.maxShield = 5;
+            _rocket.maxHealth = 10;
+            _rocket.maxShield = 10;
             _rocket.Scale = 0.7f;
             
 

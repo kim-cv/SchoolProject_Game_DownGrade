@@ -183,7 +183,7 @@ namespace DownGrade
                         {
                             Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + moveVector;
 
-                            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.BulletRed, (Position + meh * machinegunFireOffset));
+                            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
                             bullet.Scale = 0.5f;
                             bullet.speed = 8f;
                             //bullet.Position = Position + meh * fireOffset;
@@ -478,6 +478,7 @@ namespace DownGrade
                 {
                     Debug.Print("Shipdead check: " + _msSinceDead);
                     GameObjectHandler.Instance.RemoveGameObject(this);
+                    _currentWeapon = Weapons.SemiLaser;
                     LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.GameOver);
                 }
             }

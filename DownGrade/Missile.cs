@@ -37,6 +37,7 @@ namespace DownGrade
             meh = meh * speed;
             Position += meh;
 
+            
             DestroyOnExit();
             speed += 0.3f;
         }

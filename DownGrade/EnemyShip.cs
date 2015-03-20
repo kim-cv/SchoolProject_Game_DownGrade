@@ -12,6 +12,8 @@ namespace DownGrade
 {
     class EnemyShip : AnimatedSprite
     {
+        public string tag = "EnemyShip";
+
         private double rotationdifference;
         private float speed = 100f;
 
@@ -54,10 +56,6 @@ namespace DownGrade
 
                 Rotation = angle;
             }
-            
-            
-           
-
         }
 
         public override void Update(GameTime gameTime)

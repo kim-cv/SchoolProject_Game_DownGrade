@@ -172,7 +172,7 @@ namespace DownGrade
                 }        
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _keyState.IsKeyUp(Keys.Enter) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _keyState.IsKeyUp(Keys.Enter) || GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed)
             {
                 if (isStartSelected)
                 {
