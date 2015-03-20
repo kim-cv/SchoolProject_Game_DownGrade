@@ -18,6 +18,9 @@ namespace DownGrade
 
         private KeyboardState _keyState;
 
+        private float _moveDelay = 200;
+        private double _msSinceLastMove;
+
         private InputController inputController1;
         private Texture2D Start;
         private Texture2D Start_Marked;
@@ -116,47 +119,57 @@ namespace DownGrade
 
 
             // TODO: Add your update logic here
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && _keyState.IsKeyUp(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < -0.8)
             {
-                if (isStartSelected)
+                if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastMove + _moveDelay)
                 {
-                    isStartSelected = false;
-                    isSettingsSelected = true;
-                    isExitSelected = false;
-                }
-                else if (isSettingsSelected)
-                {
-                    isStartSelected = false;
-                    isSettingsSelected = false;
-                    isExitSelected = true;
-                }
-                else if (isExitSelected)
-                {
-                    isStartSelected = true;
-                    isSettingsSelected = false;
-                    isExitSelected = false;
+                    if (isStartSelected)
+                    {
+                        isStartSelected = false;
+                        isSettingsSelected = true;
+                        isExitSelected = false;
+                    }
+                    else if (isSettingsSelected)
+                    {
+                        isStartSelected = false;
+                        isSettingsSelected = false;
+                        isExitSelected = true;
+                    }
+                    else if (isExitSelected)
+                    {
+                        isStartSelected = true;
+                        isSettingsSelected = false;
+                        isExitSelected = false;
+                    }
+
+                    _msSinceLastMove = gameTime.TotalGameTime.TotalMilliseconds;
                 }
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.W) && _keyState.IsKeyUp(Keys.W))
+            else if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0.8)
             {
-                if (isStartSelected)
+                if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastMove + _moveDelay)
                 {
-                    isStartSelected = false;
-                    isSettingsSelected = false;
-                    isExitSelected = true;
-                }
-                else if (isSettingsSelected)
-                {
-                    isStartSelected = true;
-                    isSettingsSelected = false;
-                    isExitSelected = false;
-                }
-                else if (isExitSelected)
-                {
-                    isStartSelected = false;
-                    isSettingsSelected = true;
-                    isExitSelected = false;
-                }                
+                    if (isStartSelected)
+                    {
+                        isStartSelected = false;
+                        isSettingsSelected = false;
+                        isExitSelected = true;
+                    }
+                    else if (isSettingsSelected)
+                    {
+                        isStartSelected = true;
+                        isSettingsSelected = false;
+                        isExitSelected = false;
+                    }
+                    else if (isExitSelected)
+                    {
+                        isStartSelected = false;
+                        isSettingsSelected = true;
+                        isExitSelected = false;
+                    }
+
+                    _msSinceLastMove = gameTime.TotalGameTime.TotalMilliseconds;
+                }        
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _keyState.IsKeyUp(Keys.Enter) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)

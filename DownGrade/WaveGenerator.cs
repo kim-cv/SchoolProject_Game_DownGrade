@@ -20,7 +20,7 @@ namespace DownGrade
 
         // Asteroids
         private double _msSinceLastAsteroid;
-        private float _asteroidDelay = 1000;
+        private float _asteroidDelay = 500;
 
         // Enemy Ship
         private double _msSinceLastEnemy;
