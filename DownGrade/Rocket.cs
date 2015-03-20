@@ -200,8 +200,8 @@ namespace DownGrade
 
         public void ChangeWeapon()
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
-                _padState.Buttons.RightShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.Tab) && _keyState.IsKeyUp(Keys.Tab))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed &&
+                _padState.Buttons.A == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.Tab) && _keyState.IsKeyUp(Keys.Tab))
             {
                 _weaponPointer++;
                 if (_weaponPointer > _weaponList.Count -1)
