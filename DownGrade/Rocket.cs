@@ -72,14 +72,9 @@ namespace DownGrade
 
         //Experience
         private int level = 5;
-<<<<<<< HEAD
-        private int maxExperience = 10;
-
-=======
         private int maxExperience = 50;
         private double _msSinceDead;
         private float gameoverDelay = 1000;
->>>>>>> 705f41ddbdfe1620d77fbaff18b8cf43fa176436
         private GameTime gameref;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
