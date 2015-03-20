@@ -72,8 +72,14 @@ namespace DownGrade
 
         //Experience
         private int level = 5;
+<<<<<<< HEAD
         private int maxExperience = 10;
 
+=======
+        private int maxExperience = 50;
+        private double _msSinceDead;
+        private float gameoverDelay = 1000;
+>>>>>>> 705f41ddbdfe1620d77fbaff18b8cf43fa176436
         private GameTime gameref;
 
         public Rocket(Texture2D spriteTexture, Vector2 position)
@@ -121,6 +127,7 @@ namespace DownGrade
             ChangeWeapon();
             regainShield();
             shieldAbility();
+            CheckDeath();
 
             //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
@@ -222,13 +229,13 @@ namespace DownGrade
                     Player_Explosion _playerExplosion =
                         (Player_Explosion)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Player_Explosion, new Vector2(PositionX, PositionY));
                     _playerExplosion.Scale = 0.7f;
-
                     _playerExplosion.Rotation = Rotation;
                     _playerExplosion.Position = Position;
 
-                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.GameOver);
+                     _msSinceDead = gameref.TotalGameTime.TotalMilliseconds;
+                    this.Layer = 0f;
                     CollisionHandler.Instance.unregister(this);
-                    GameObjectHandler.Instance.RemoveGameObject(this);
+                    
                 }
             }
             
@@ -466,6 +473,18 @@ namespace DownGrade
                 }
                 maxExperience *= 2;
                 Experience = maxExperience;
+            }
+        }
+
+        private void CheckDeath()
+        {
+            if(currentHealth <= 0){
+                if (gameref.TotalGameTime.TotalMilliseconds > _msSinceDead + gameoverDelay)
+                {
+                    Debug.Print("Shipdead check: " + _msSinceDead);
+                    GameObjectHandler.Instance.RemoveGameObject(this);
+                    LevelHandler.Instance.LoadLevel(LevelHandler.TypeOfLevel.GameOver);
+                }
             }
         }
     }
