@@ -43,7 +43,7 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            if (s.GetType() != typeof(EnemyShip) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Asteroid) && s.GetType() != typeof(Mine))
+            if (s.GetType() != typeof(EnemyShip) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Asteroid) && s.GetType() != typeof(Mine) && s.GetType() != typeof(EnemyBullet))
             {
                 CollisionHandler.Instance.unregister(this);
                 GameObjectHandler.Instance.RemoveGameObject(this);
