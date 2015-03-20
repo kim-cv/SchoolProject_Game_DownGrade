@@ -39,6 +39,8 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Asteroid_Explosion.cs" />
     <Compile Include="AudioHandler.cs" />
+    <Compile Include="EnemyBullet.cs" />
+    <Compile Include="EnemyShip.cs" />
     <Compile Include="GameObjectHandler.cs" />
     <Compile Include="Healthbar.cs" />
     <Compile Include="Laser.cs" />

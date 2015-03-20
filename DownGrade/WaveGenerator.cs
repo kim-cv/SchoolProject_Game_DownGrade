@@ -22,6 +22,10 @@ namespace DownGrade
         private double _msSinceLastAsteroid;
         private float _asteroidDelay = 1000;
 
+        // Enemy Ship
+        private double _msSinceLastEnemy;
+        private float _enemyDelay = 5000;
+
         // Mines
         private double _msSinceLastMine;
         private float _mineDelay = 10000;
@@ -35,7 +39,55 @@ namespace DownGrade
 
             Asteroids();
             Mines();
+            SpawnEnemyShip();
         }
+
+        public void SpawnEnemyShip()
+        {
+            if (gameRef.TotalGameTime.TotalMilliseconds > _msSinceLastEnemy + _enemyDelay)
+            {
+                int side = rnd.Next(1, 4);
+                int amount = rnd.Next(1280);
+                Vector2 v = new Vector2();
+                switch (side)
+                {
+                    case 1:
+                        {
+                            //top
+                            v.Y = -100;
+                            v.X = amount;
+                            break;
+                        }
+                    case 2:
+                        {
+                            //bund
+                            v.Y = 1280 + 100;
+                            v.X = amount;
+                            break;
+                        }
+                    case 3:
+                        {
+                            //Venstre
+                            v.Y = amount;
+                            v.X = -100;
+                            break;
+                        }
+                    case 4:
+                        {
+                            //Hojre
+                            v.Y = amount;
+                            v.X = 1280 + 100;
+                            break;
+                        }
+                }
+
+                EnemyShip _enemyShip = (EnemyShip)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.EnemyShip, new Vector2(10, 300));
+                _enemyShip.Direction();
+                _enemyShip.Scale = 0.7f;
+                _msSinceLastEnemy = gameRef.TotalGameTime.TotalMilliseconds;
+            }
+        }
+
 
         public void Mines()
         {
