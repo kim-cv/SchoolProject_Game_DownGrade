@@ -30,7 +30,9 @@ namespace DownGrade
             Laser,
             Player_Explosion,
             Mine,
-            Missile
+            Missile,
+            EnemyShip,
+            EnemyBullet
         }
 
         private Game GameReference = null;
@@ -174,6 +176,16 @@ namespace DownGrade
                     {
                         texture = GameReference.Content.Load<Texture2D>("Missile.png");
                         return new Missile(texture, pos);
+                    }
+                case TypeOfGameObject.EnemyShip:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Enemy_2_64x64.png");
+                        return new EnemyShip(texture, pos);
+                    }
+                case TypeOfGameObject.EnemyBullet:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("bullet_red.png");
+                        return new EnemyBullet(texture, pos);
                     }
                 default:
                     {

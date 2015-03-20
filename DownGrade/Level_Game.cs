@@ -89,9 +89,6 @@ namespace DownGrade
             backgroundTexture = gameReference.Content.Load<Texture2D>("Background_1280x720.png");
 
             //Temp GUI Weapon show
-            machinegun = gameReference.Content.Load<Texture2D>("UI_Machinegun_Marked.png");
-            laser = gameReference.Content.Load<Texture2D>("UI_Laser.png");
-            weapons = gameReference.Content.Load<Texture2D>("GUI_Weapons.png");
             Pause = gameReference.Content.Load<Texture2D>("Pause.png");
 
 
@@ -99,9 +96,8 @@ namespace DownGrade
             Rocket _rocket = (Rocket)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Rocket, new Vector2(608, 328));
             _rocket.maxHealth = 5;
             _rocket.maxShield = 5;
-
             _rocket.Scale = 0.7f;
-            //_rocket.Position = new Vector2(100, 250);
+            
 
             UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
 
@@ -216,12 +212,6 @@ namespace DownGrade
 
             spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f,
                 new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
-            spriteBatch.Draw(weapons, new Vector2(230, 682), null, Color.White, 0f, new Vector2(0, 0), 1f,
-                SpriteEffects.None, 1f);
-            spriteBatch.Draw(machinegun, new Vector2(370, 675), null, Color.White, 0f, new Vector2(0, 0), 1f,
-                SpriteEffects.None, 1f);
-            spriteBatch.Draw(laser, new Vector2(450, 675), null, Color.White, 0f, new Vector2(0, 0), 1f,
-                SpriteEffects.None, 1f);
 
             if (paused)
             {

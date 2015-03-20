@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DownGrade
 {
-    class Bullet : Sprite
+    class EnemyBullet : Sprite
     {
         public float speed;
 
@@ -18,7 +18,7 @@ namespace DownGrade
         private SoundEffect bulletSoundEffect;
         private SoundEffectInstance bulletSoundEffectInstance;
 
-        public Bullet(Texture2D spriteTexture, Vector2 position)
+        public EnemyBullet(Texture2D spriteTexture, Vector2 position)
             : base(spriteTexture, position, 0.2f)
         {
             CollisionHandler.Instance.register(this);
@@ -43,7 +43,7 @@ namespace DownGrade
 
         public override void Collide(Sprite s)
         {
-            if (s.GetType() != typeof(Rocket) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(EnemyBullet))
+            if (s.GetType() != typeof(EnemyShip) && s.GetType() != typeof(Bullet) && s.GetType() != typeof(Asteroid) && s.GetType() != typeof(Mine))
             {
                 CollisionHandler.Instance.unregister(this);
                 GameObjectHandler.Instance.RemoveGameObject(this);
