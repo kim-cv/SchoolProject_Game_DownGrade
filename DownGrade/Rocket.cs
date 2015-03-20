@@ -28,6 +28,17 @@ namespace DownGrade
             Idle
         }
 
+        public enum Weapons
+        {
+            SemiLaser,
+            AutoLaser,
+            Missile
+        }
+
+        private Weapons _currentWeapon;
+        private int _weaponPointer = 0;
+        private List<Weapons> _weaponList = new List<Weapons>(); 
+
 
         private KeyboardState _keyState;
         private GamePadState _padState;
@@ -56,16 +67,12 @@ namespace DownGrade
         private double _msSinceLastDamage;
         private double _msSinceLastShield;
 
-        //Weapon
-        private string weapon = "Gun";
-        private Queue<string> weaponList = new Queue<string>();
-
         // Abilities
         private List<string> abilitiesList = new List<string>();
 
         //Experience
         private int level = 5;
-        private int maxExperience = 50;
+        private int maxExperience = 10;
 
         private GameTime gameref;
 
@@ -79,9 +86,13 @@ namespace DownGrade
 
             SourceRectangle = new Rectangle(0, 0, 64, 64);
 
-            weaponList.Enqueue("Gun");
-            weaponList.Enqueue("Missile");
-            weaponList.Enqueue("MachineGun");
+            foreach (Weapons w in Enum.GetValues(typeof(Weapons)))
+            {
+                _weaponList.Add(w);
+            }
+
+            _currentWeapon = _weaponList[0];
+
             abilitiesList.Add("Shield");
             abilitiesList.Add("ShieldRegain");
         }
@@ -105,9 +116,9 @@ namespace DownGrade
             Movement(moveVector);
             Animation();
             StayInsideSCreen();
-            ExperienceCalculator();
-            ShootButton(moveVector, gameTime);
-            WeaponState();
+            xpCalculator();
+            ShootButton(moveVector, gameTime, Weapons.SemiLaser);
+            ChangeWeapon();
             regainShield();
             shieldAbility();
 
@@ -128,65 +139,74 @@ namespace DownGrade
 
         }
 
-        private void ShootButton(Vector2 moveVector, GameTime gameTime)
+        private void ShootButton(Vector2 moveVector, GameTime gameTime, Weapons selectedWeapon)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                if (weapon == "Gun")
+                switch (_currentWeapon)
                 {
-                    if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
+                    case Weapons.SemiLaser:
                     {
-                        Shoot(moveVector);
-                    }
-                }
+                        if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
+                        {
+                            Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + moveVector;
 
-                if (weapon == "Missile")
-                {
-                    if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
-                    {
-                        Shoot(moveVector);
+                            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
+                            bullet.Scale = 0.5f;
+                            bullet.speed = 8f;
+                            //bullet.Position = Position + meh * fireOffset;
+                            bullet.Rotation = Rotation;
+                        }
+
+                        break;
                     }
-                }
-                if (weapon == "MachineGun")
-                {
-                    if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
+
+                    case Weapons.Missile:
                     {
-                        Shoot(moveVector);
-                        _msSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                        if (_padState.Buttons.X == ButtonState.Released && _keyState.IsKeyUp(Keys.Space))
+                        {
+                            Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 10f + moveVector;
+
+                            Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh * machinegunFireOffset));
+                            missile.Scale = 1.5f;
+                            missile.Rotation = Rotation;
+                        }
+
+                        break;
+                    }
+
+                    case Weapons.AutoLaser:
+                    {
+                        if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastBullet + _bulletDelay)
+                        {
+                            Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + moveVector;
+
+                            Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.BulletRed, (Position + meh * machinegunFireOffset));
+                            bullet.Scale = 0.5f;
+                            bullet.speed = 8f;
+                            //bullet.Position = Position + meh * fireOffset;
+                            bullet.Rotation = Rotation;
+
+                            _msSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+                        }
+
+                        break;
                     }
                 }
             }
         }
 
-        private void Shoot(Vector2 shipMove)
+        public void ChangeWeapon()
         {
-            if (weapon == "Gun")
-            { 
-                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
-
-                Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Bullet, (Position + meh * machinegunFireOffset));
-                bullet.Scale = 0.5f;
-                bullet.speed = 8f;
-                //bullet.Position = Position + meh * fireOffset;
-                bullet.Rotation = Rotation;
-            }
-            else if (weapon == "Missile")
+            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
+                _padState.Buttons.RightShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.Tab) && _keyState.IsKeyUp(Keys.Tab))
             {
-                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 10f + shipMove;
-
-                Missile missile = (Missile)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.Missile, (Position + meh * machinegunFireOffset));
-                missile.Scale = 1.5f;
-                missile.Rotation = Rotation;
-            }
-            else if (weapon == "MachineGun")
-            {
-                Vector2 meh = new Vector2((float)Math.Cos(Rotation - MathHelper.PiOver2), (float)Math.Sin(Rotation - MathHelper.PiOver2)) * 4f + shipMove;
-
-                Bullet bullet = (Bullet)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.BulletRed, (Position + meh * machinegunFireOffset));
-                bullet.Scale = 0.5f;
-                bullet.speed = 8f;
-                //bullet.Position = Position + meh * fireOffset;
-                bullet.Rotation = Rotation;
+                _weaponPointer++;
+                if (_weaponPointer > _weaponList.Count -1)
+                {
+                    _weaponPointer = 0;
+                }
+                _currentWeapon = _weaponList[_weaponPointer];
             }
         }
 
@@ -336,44 +356,6 @@ namespace DownGrade
                 Position = new Vector2(PositionX, 605);
         }
 
-        private void WeaponState()
-        {
-            //Change weapon with left/right joystick shoulder buttons
-            if (GamePad.GetState(PlayerIndex.One).Buttons.RightShoulder == ButtonState.Pressed &&
-                _padState.Buttons.RightShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.Tab) && _keyState.IsKeyUp(Keys.Tab))
-            {
-                string nextweapon = weaponList.Dequeue();
-
-                weapon = nextweapon;
-
-                weaponList.Enqueue(nextweapon);
-            }
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.LeftShoulder == ButtonState.Pressed &&
-                _padState.Buttons.LeftShoulder == ButtonState.Released || Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _keyState.IsKeyUp(Keys.LeftShift))
-            {
-                string previousweapon = weaponList.Last();
-
-                weapon = previousweapon;
-
-                List<string> tempweapons = new List<string>();
-
-                foreach (var w in weaponList)
-                {
-                    if(w != previousweapon){
-                        tempweapons.Add(w);
-                    }
-                }
-
-                weaponList.Enqueue(previousweapon);
-
-                foreach (var t in tempweapons)
-                {
-                    weaponList.Enqueue(t);
-                }
-            }
-        }
-
         private void Movement(Vector2 moveVector)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A)) Rotation -= 0.05f;
@@ -435,62 +417,56 @@ namespace DownGrade
             }
         }
 
-
-        public void ExperienceCalculator()
+        public void xpCalculator()
         {
             if (Experience < 1 && level > 1)
             {
                 level -= 1;
-                
-                if (weaponList.Count > 1)
+                if (abilitiesList.Count > 0)
                 {
-                    if (abilitiesList.Count > 0)
+                    if (abilitiesList.Contains("ShieldRegain"))
                     {
-                        Random rnd = new Random();
-
-                        if (rnd.Next(1, 2) == 1)
-                        {
-
-                            if (weaponList.Peek() == "Gun")
-                            {
-                                weaponList.Dequeue();
-                                weaponList.Dequeue();
-                                weaponList.Enqueue("Gun");
-                            }
-                            else
-                            {
-                                weaponList.Dequeue();
-                            }
-                        }
-                        else
-                        {
-                            if (abilitiesList.Count > 0)
-                            {
-                                abilitiesList.RemoveAt(rnd.Next(1, abilitiesList.Count));
-                            }
-                        }
+                        abilitiesList.Remove("ShieldRegain");
+                        Debug.WriteLine("Shield Regain LOST");
                     }
                     else
                     {
-                        if (weaponList.Peek() == "Gun")
+                        if (abilitiesList.Contains("Shield"))
                         {
-                            weaponList.Dequeue();
-                            weaponList.Dequeue();
-                            weaponList.Enqueue("Gun");
-                        }
-                        else
-                        {
-                            weaponList.Dequeue();
+                            abilitiesList.Remove("Shield");
+                            Debug.WriteLine("Shield LOST");
                         }
                     }
                 }
-                
-
+                else
+                {
+                    if (_weaponList.Count > 1)
+                    {
+                        if (_weaponList.Contains(Weapons.Missile))
+                        {
+                            _weaponList.Remove(Weapons.Missile);
+                            Debug.WriteLine("Missile LOST");
+                            
+                        }
+                        else
+                        {
+                            if (_weaponList.Contains(Weapons.AutoLaser))
+                            {
+                                _weaponList.Remove(Weapons.AutoLaser);
+                                Debug.WriteLine("Auto Laser LOST");
+                                _weaponPointer++;
+                                if (_weaponPointer > _weaponList.Count - 1)
+                                {
+                                    _weaponPointer = 0;
+                                }
+                                _currentWeapon = _weaponList[_weaponPointer];
+                            }
+                        }
+                    }
+                }
                 maxExperience *= 2;
                 Experience = maxExperience;
             }
-
-            
         }
     }
 }

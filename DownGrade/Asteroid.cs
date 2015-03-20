@@ -94,7 +94,7 @@ namespace DownGrade
                 if (s.GetType() != typeof (Mine) || s.GetType() != typeof (Asteroid))
                 {
                     int experience = GameObjectHandler.Instance.FindGameObjectProperty("DownGrade.Rocket");
-                    if (s.GetType() == typeof (Bullet))
+                    if (s.GetType() == typeof(Bullet) || s.GetType() == typeof(Missile))
                     {
                         GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 5);
                     }
