@@ -18,6 +18,12 @@ namespace DownGrade
         public int Experience { get; set; }
 
         public string tag = "Rocket";
+        private bool _spawned = false;
+        private RocketHit _rocketHit;
+        private ShieldRegenLost _shieldRegenLost;
+        private ShieldLost _shieldLost;
+        private AutoLaserLost _autoLaserLost;
+        private MissileLost _missileLost;
 
         //Animation State
         private State _lastState;
@@ -42,6 +48,11 @@ namespace DownGrade
 
         private KeyboardState _keyState;
         private GamePadState _padState;
+
+        private bool _hit;
+        private double _msSinceLastHit;
+
+        private double _msSinceLastFeedback;
 
         //Movement
         private float acceleration = 5f;
@@ -72,7 +83,7 @@ namespace DownGrade
 
         //Experience
         private int level = 5;
-        private int maxExperience = 50;
+        private int maxExperience = 40;
         private double _msSinceDead;
         private float gameoverDelay = 1000;
         private GameTime gameref;
@@ -113,6 +124,16 @@ namespace DownGrade
                 drawResources();
             }
 
+            if (!_spawned)
+            {
+                _rocketHit = (RocketHit) GameObjectHandler.Instance.FindGameObject("RocketHit");
+                _shieldRegenLost = (ShieldRegenLost)GameObjectHandler.Instance.FindGameObject("ShieldRegenLost");
+                _shieldLost = (ShieldLost)GameObjectHandler.Instance.FindGameObject("ShieldLost");
+                _autoLaserLost = (AutoLaserLost)GameObjectHandler.Instance.FindGameObject("AutoLaserLost");
+                _missileLost = (MissileLost)GameObjectHandler.Instance.FindGameObject("MissileLost");
+                _spawned = true;
+            }
+
             //All sorts of methods controlling the player
             Movement(moveVector);
             Animation();
@@ -123,6 +144,23 @@ namespace DownGrade
             regainShield();
             shieldAbility();
             CheckDeath();
+
+
+            if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastHit + 200)
+            {
+                _rocketHit.Hide();
+
+                _msSinceLastHit = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+
+            if (gameTime.TotalGameTime.TotalMilliseconds > _msSinceLastFeedback + 2000)
+            {
+                _shieldRegenLost.Hide();
+                _shieldLost.Hide();
+                _autoLaserLost.Hide();
+                _missileLost.Hide();
+            }
+
 
             //What is keyboard and gamepad state?
             _keyState = Keyboard.GetState();
@@ -250,6 +288,8 @@ namespace DownGrade
 
         private void Hit(double damage)
         {
+            _rocketHit.Show();
+
             if (currentHealth > 0 && currentShield > 0)
             {
                 currentShield -= damage;
@@ -429,6 +469,8 @@ namespace DownGrade
                     if (abilitiesList.Contains("ShieldRegain"))
                     {
                         abilitiesList.Remove("ShieldRegain");
+                        _msSinceLastFeedback = gameref.TotalGameTime.TotalMilliseconds;
+                        _shieldRegenLost.Show();
                         Debug.WriteLine("Shield Regain LOST");
                     }
                     else
@@ -436,6 +478,8 @@ namespace DownGrade
                         if (abilitiesList.Contains("Shield"))
                         {
                             abilitiesList.Remove("Shield");
+                            _msSinceLastFeedback = gameref.TotalGameTime.TotalMilliseconds;
+                            _shieldLost.Show();
                             Debug.WriteLine("Shield LOST");
                         }
                     }
@@ -447,6 +491,8 @@ namespace DownGrade
                         if (_weaponList.Contains(Weapons.Missile))
                         {
                             _weaponList.Remove(Weapons.Missile);
+                            _msSinceLastFeedback = gameref.TotalGameTime.TotalMilliseconds;
+                            _missileLost.Show();
                             Debug.WriteLine("Missile LOST");
                             
                         }
@@ -455,6 +501,8 @@ namespace DownGrade
                             if (_weaponList.Contains(Weapons.AutoLaser))
                             {
                                 _weaponList.Remove(Weapons.AutoLaser);
+                                _msSinceLastFeedback = gameref.TotalGameTime.TotalMilliseconds;
+                                _autoLaserLost.Show();
                                 Debug.WriteLine("Auto Laser LOST");
                                 _weaponPointer++;
                                 if (_weaponPointer > _weaponList.Count - 1)

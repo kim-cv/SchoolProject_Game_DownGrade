@@ -35,10 +35,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedRocket.cs" />
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Asteroid_Explosion.cs" />
     <Compile Include="AudioHandler.cs" />
+    <Compile Include="MissileLost.cs" />
+    <Compile Include="AutoLaserLost.cs" />
     <Compile Include="EnemyBullet.cs" />
     <Compile Include="EnemyShip.cs" />
     <Compile Include="GameObjectHandler.cs" />
@@ -54,7 +55,10 @@
     <Compile Include="Missile.cs" />
     <Compile Include="Player_Explosion.cs" />
     <Compile Include="Resource.cs" />
+    <Compile Include="RocketHit.cs" />
     <Compile Include="Shieldbar.cs" />
+    <Compile Include="ShieldLost.cs" />
+    <Compile Include="ShieldRegenLost.cs" />
     <Compile Include="Spawner.cs" />
     <Compile Include="Ufo.cs" />
     <Compile Include="Robot.cs" />
@@ -89,6 +93,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Asteroid_Explosion_64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\AutoLaser_Lost.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Background.png">
@@ -214,6 +221,9 @@
     <Content Include="Content\Missile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Missile_Lost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\numeral0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -251,9 +261,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\playerShip1_red.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Player_1_64x64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\powerupBlue.png">
@@ -325,6 +332,12 @@
     <Content Include="Content\ShieldFill.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\ShieldRegen_Lost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Shield_Lost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Ship_Explosion_96x96.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -335,6 +348,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\TitleScreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Player_1_64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UFO3_64x64_HIT.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\UI.png">

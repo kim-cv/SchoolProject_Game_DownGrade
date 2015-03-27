@@ -32,7 +32,12 @@ namespace DownGrade
             Mine,
             Missile,
             EnemyShip,
-            EnemyBullet
+            EnemyBullet,
+            RocketHit,
+            AutoLaserLost,
+            MissileLost,
+            ShieldRegenLost,
+            ShieldLost
         }
 
         private Game GameReference = null;
@@ -186,6 +191,31 @@ namespace DownGrade
                     {
                         texture = GameReference.Content.Load<Texture2D>("bullet_red.png");
                         return new EnemyBullet(texture, pos);
+                    }
+                case TypeOfGameObject.RocketHit:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("UFO3_64x64_HIT.png");
+                        return new RocketHit(texture, pos);
+                    }
+                case TypeOfGameObject.AutoLaserLost:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("AutoLaser_Lost.png");
+                        return new AutoLaserLost(texture, pos);
+                    }
+                case TypeOfGameObject.MissileLost:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Missile_Lost.png");
+                        return new MissileLost(texture, pos);
+                    }
+                case TypeOfGameObject.ShieldRegenLost:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("ShieldRegen_Lost.png");
+                        return new ShieldRegenLost(texture, pos);
+                    }
+                case TypeOfGameObject.ShieldLost:
+                    {
+                        texture = GameReference.Content.Load<Texture2D>("Shield_Lost.png");
+                        return new ShieldLost(texture, pos);
                     }
                 default:
                     {

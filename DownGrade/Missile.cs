@@ -19,7 +19,7 @@ namespace DownGrade
         private SoundEffectInstance missileSoundEffectInstance;
 
         public Missile(Texture2D spriteTexture, Vector2 position)
-            : base(spriteTexture, position, 0.2f)
+            : base(spriteTexture, position, 0.1f)
         {
             CollisionHandler.Instance.register(this);
             //missileSoundEffect = AudioHandler.Instance.LoadSoundEffect(AudioHandler.TypeOfSound.?);

@@ -97,6 +97,25 @@ namespace DownGrade
             _rocket.maxHealth = 10;
             _rocket.maxShield = 10;
             _rocket.Scale = 0.7f;
+
+            RocketHit _rocketHit = (RocketHit)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.RocketHit, new Vector2(-1000, -1000));
+            _rocketHit.Scale = 0.7f;
+
+            AutoLaserLost _autoLaserLost =
+                (AutoLaserLost) Spawner.Instance.Spawn(Spawner.TypeOfGameObject.AutoLaserLost, new Vector2(500, 20));
+            _autoLaserLost.Scale = 2f;
+
+            MissileLost _missileLost =
+                (MissileLost)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.MissileLost, new Vector2(500, 20));
+            _missileLost.Scale = 2f;
+
+            ShieldRegenLost _shieldRegenLost =
+                (ShieldRegenLost)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.ShieldRegenLost, new Vector2(500, 20));
+            _shieldRegenLost.Scale = 2f;
+
+            ShieldLost _shielLost =
+                (ShieldLost)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.ShieldLost, new Vector2(500, 20));
+            _shielLost.Scale = 2f;
             
 
             UI ui = (UI)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.UI, new Vector2(0, 640));
@@ -211,7 +230,7 @@ namespace DownGrade
             }
 
             spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), new Rectangle(0, 0, 1280, 720), Color.White, 0f,
-                new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+                new Vector2(0, 0), 1f, SpriteEffects.None, 0.05f);
 
             if (paused)
             {

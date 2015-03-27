@@ -39,7 +39,7 @@ namespace DownGrade
                 Sprite temp = GameObjectHandler.Instance.FindGameObject("Rocket");
                 if (temp != null)
                 {
-                    direction = GameObjectHandler.Instance.FindGameObject("").Position - Position;
+                    direction = GameObjectHandler.Instance.FindGameObject("Rocket").Position - Position;
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace DownGrade
                     int experience = GameObjectHandler.Instance.FindGameObjectProperty("DownGrade.Rocket");
                     if (s.GetType() == typeof(Bullet) || s.GetType() == typeof(Missile))
                     {
-                        GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 5);
+                        GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 2);
                     }
                 }
 

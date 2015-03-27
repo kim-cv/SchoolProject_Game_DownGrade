@@ -115,7 +115,7 @@ namespace DownGrade
                 int experience = GameObjectHandler.Instance.FindGameObjectProperty("DownGrade.Rocket");
                 if (s.GetType() == typeof (Bullet))
                 {
-                    GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 20);
+                    GameObjectHandler.Instance.SetGameObjectProperty("DownGrade.Rocket", experience - 10);
                 }
             }
         }

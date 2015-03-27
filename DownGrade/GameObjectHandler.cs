@@ -35,7 +35,7 @@ namespace DownGrade
         {
             foreach (Sprite o in ListOfGameObjects)
             {
-                if (o.GetType().ToString() == "DownGrade.Rocket")
+                if (o.GetType().ToString() == "DownGrade."+gameObjectTag)
                 {
                     return o;
                 }

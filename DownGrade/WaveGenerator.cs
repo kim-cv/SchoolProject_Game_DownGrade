@@ -83,7 +83,7 @@ namespace DownGrade
 
                 EnemyShip _enemyShip = (EnemyShip)Spawner.Instance.Spawn(Spawner.TypeOfGameObject.EnemyShip, v);
                 _enemyShip.Direction();
-                _enemyShip.Scale = 3f;
+                _enemyShip.Scale = 2f;
                 _msSinceLastEnemy = gameRef.TotalGameTime.TotalMilliseconds;
             }
         }
